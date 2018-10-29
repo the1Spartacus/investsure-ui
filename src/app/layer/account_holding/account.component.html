@@ -1,0 +1,132 @@
+<app-dialog></app-dialog>
+<div>
+  <img class="logo" src="assets\InvestSure.png">
+</div>
+<div class="container">
+  <div class="client-info">
+    <mat-list>
+      <mat-list-item>
+          <h3 mat-line><strong>CLIENT INFO</strong></h3>
+          <p mat-line><strong>Name:</strong> {{policydetail.investor.Name}}</p>
+          <p mat-line><strong>ID number:</strong> {{policydetail.investor.IdNumber}}</p>
+          <p mat-line><strong>E-mail:</strong> {{policydetail.investor.Email}}</p>
+          <p mat-line><strong>Trading Platform:</strong> {{policydetail.account.TradingPlatformName}}</p>
+          <p mat-line><strong>Policy Number:</strong> {{policydetail.policy.PolicyNumber}}</p>
+      </mat-list-item>
+      </mat-list>
+  </div>
+  <div class="auto-renewal">
+    <mat-list>
+        <mat-list-item>
+            <p mat-line><strong>Auto-renew insurance: </strong>
+              <mat-slide-toggle>ON</mat-slide-toggle>
+            </p>
+            <p mat-line><strong>Estimated  renewal cost:</strong> {{policydetail.policy.RenewalAmount}} </p>
+            <p mat-line><strong>Available funds:</strong> {{policydetail.account.AccountBalance}}</p>
+            <p mat-line><strong>Anniversary Date:</strong> {{policydetail.policy.AnniversaryDate}}</p>
+        </mat-list-item>
+        </mat-list>
+  </div>
+</div>
+<mat-divider></mat-divider>
+<div>
+  <mat-card>
+    <h5>ACCOUNT HOLDINGS</h5>
+    <div class="mat-elevation-z8">
+
+    <table mat-table [dataSource]="policyDetailData" class="mat-elevation-z8">
+
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+
+        <!-- Share Column -->
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef> # </th>
+          <td mat-cell *matCellDef="let holding"> {{holding.ISINCode}} </td>
+        </ng-container>
+
+          <!-- Share Column -->
+          <ng-container matColumnDef="share">
+            <th mat-header-cell *matHeaderCellDef> SHARE </th>
+            <td mat-cell *matCellDef="let holding"> {{holding.StockName}} </td>
+          </ng-container>
+
+        <!-- Value Column -->
+        <ng-container matColumnDef="value">
+          <th mat-header-cell *matHeaderCellDef> VALUE </th>
+          <td mat-cell *matCellDef="let holding"> {{holding.Value | currency : "R"}} </td>
+        </ng-container>
+
+        <!-- Total number of shares Column -->
+        <ng-container matColumnDef="totalNumShares">
+          <th mat-header-cell *matHeaderCellDef> TOTAL NUMBER<br> OF SHARES </th>
+          <td class="totnum" mat-cell *matCellDef="let holding"> {{holding.NumberOfShares}}</td>
+        </ng-container>
+
+        <!-- Uninsured Column -->
+        <ng-container matColumnDef="uninsured">
+          <th mat-header-cell *matHeaderCellDef> UNINSURED </th>
+          <td mat-cell *matCellDef="let holding"> {{holding.UninsuredShares}} </td>
+        </ng-container>
+
+        <!-- Panding insure Column -->
+        <ng-container matColumnDef="pending">
+            <th mat-header-cell *matHeaderCellDef> PENDING <br>INSURE </th>
+            <td mat-cell *matCellDef="let holding"> {{holding.PendingShares}} </td>
+          </ng-container>
+
+          <!-- Insured Column -->
+        <ng-container matColumnDef="insured">
+            <th mat-header-cell *matHeaderCellDef> INSURED </th>
+            <td mat-cell *matCellDef="let holding"> {{holding.InsuredShares}} </td>
+          </ng-container>
+
+          <!-- Number to  Insure Column -->
+        <ng-container matColumnDef="insure">
+            <th mat-header-cell *matHeaderCellDef> NUMBER TO<br> INSURE </th>
+            <td mat-cell *matCellDef="let holding">
+              <input type="number" min="0" max="{{holding.UninsuredShares}}" [disabled]="insureDisable(holding)" matInput  [(ngModel)]="holding.NumberOfSharesToInsure" >
+              <div *ngIf="numberToInsureError(holding)">{{errorMessage}}</div>
+            </td>
+          </ng-container>
+
+          <!-- Number to Cancel Column -->
+        <ng-container matColumnDef="cancel">
+            <th mat-header-cell *matHeaderCellDef> NUMBER TO<br> CANCEL </th>
+            <td mat-cell *matCellDef="let holding">
+              <input type="number" min="0" max="{{holding.InsuredShares}}" [disabled]="cancelDisable(holding)" matInput  [(ngModel)]="holding.NumberOfSharesToCancel" >
+            <div *ngIf="numberToCancelError(holding)">{{errorMessage}}</div>
+            </td>
+          </ng-container>
+
+          <!-- Estimated Costs Column -->
+        <ng-container matColumnDef="costs">
+            <th mat-header-cell *matHeaderCellDef> ESTIMATED COSTS </th>
+            <td mat-cell *matCellDef="let holding">
+              <input matInput placeholder="0" [(ngModel)]="holding.Premium" ></td>
+          </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (change)="onChangeValidation(row)"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+      <div class="add"> <button class="add" mat-raised-button>+</button></div>
+      <div class="container_submit">
+        <div class="total">
+          <mat-label>TOTAL COSTS:</mat-label>
+          <input matInput placeholder="0" [(ngModel)]="Total" >
+        </div>
+        <div class="submit">
+           <button mat-raised-button [disabled]="error1 || error2"  (click)="submit()">SUBMIT</button>
+        </div>
+      </div>
+  </mat-card>
+
+</div>
+
+
+<mat-divider></mat-divider>
+<app-claim></app-claim>
+<mat-divider></mat-divider>

@@ -1,0 +1,84 @@
+mat-card{
+  width: 80%;
+  height: auto;
+  margin: auto;
+  margin-bottom: 0.5%;
+  padding-bottom:1%;
+}
+.client-info {
+  margin-left: 8%;
+}
+.auto-renewal {
+  float: right;
+  margin-right: 8%;
+}
+.container div {
+  display: inline-block;
+}
+mat-divider {
+   margin: auto;
+   width: 85%;
+}
+table {
+  width: 100%;
+}
+input{
+  width: 100px;
+  height: 23px;
+  border-radius: 100px;
+  text-align: center;
+  border-color: #286491;
+}
+
+
+th {
+  background-color:#F5F6FA;
+  font-size: 11px;
+  text-align: center;
+}
+td {
+  font-size: 11px;
+}
+
+.container_submit {
+  margin-left: 83.4%;
+  margin-top: -3.5%;
+}
+.add button {
+  width: 108px;
+  height: auto;
+  border-radius: 38px;
+  text-align: center;
+  font-size: 14px;
+  color: aliceblue;
+  background-color: #286491;
+  margin-top: 1%;
+}
+.submit button {
+  width: 108px;
+  height: auto;
+  border-radius: 38px;
+  text-align: center;
+  font-size: 14px;
+  color: aliceblue;
+  background-color: #286491;
+  margin-top: 2%;
+}
+mat-label{
+  margin-left: -85%;
+}
+.total input {
+  margin-left: 5%;
+}
+.submit {
+  margin-left: -11%;
+}
+.logo {
+  object-fit: contain;
+  width: 200px;
+  height: 223px;
+  margin: 8%;
+  margin-bottom: -5%;
+  margin-top: -5%;
+}
+

@@ -1,0 +1,22 @@
+mat-card{
+  width: 80%;
+  height: auto;
+  margin: auto;
+  margin-bottom: 0.5%;
+  padding-bottom:1%;
+}
+table {
+  width: 100%;
+}
+th {
+  background-color:#F5F6FA;
+  font-size: 11px;
+  text-align: center;
+}
+td {
+  font-size: 11px;
+}
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
