@@ -5,7 +5,48 @@ import { Policy } from '../models/policy.model';
 import { PolicyDetail } from '../models/policyDetail.model';
 import { Account } from '../models/account.model';
 
-export let holding: Holding[] = [{  ISINCode: 2,
+export let stocks: Stock[] = [{
+  ISINCode: 4,
+  StockActivity: true,
+  StockCode: '1234',
+  StockId: 4432,
+  StockName: 'BIG BANANA FILMS',
+  StockPrice: 2000,
+  StockRate: 10,
+  StockRemainingLimit: 50
+},
+{
+  ISINCode: 5,
+  StockActivity: true,
+  StockCode: '1234',
+  StockId: 4432,
+  StockName: 'LAFARGE',
+  StockPrice: 1800,
+  StockRate: 10,
+  StockRemainingLimit: 50
+},
+{
+  ISINCode: 6,
+  StockActivity: true,
+  StockCode: '1234',
+  StockId: 4432,
+  StockName: 'MEDA PHARMA',
+  StockPrice: 1000,
+  StockRate: 10,
+  StockRemainingLimit: 50
+},
+{
+  ISINCode: 6,
+  StockActivity: true,
+  StockCode: '1234',
+  StockId: 4432,
+  StockName: 'NETFLIX',
+  StockPrice: 500,
+  StockRate: 10,
+  StockRemainingLimit: 50
+}];
+
+export let holding: Holding[] = [{  ISINCode: 1,
   StockActivity: true,
   StockCode: '123',
   StockId: 12,
@@ -15,7 +56,7 @@ export let holding: Holding[] = [{  ISINCode: 2,
   StockRemainingLimit: 15, HoldingNumber: 1, InsuredShares: 50, NumberOfShares: 500, PendingShares: 100, UninsuredShares: 450, Value: 0,
   NumberOfSharesToInsure: 0, NumberOfSharesToCancel: 0, Premium: 0, MovementType: ''
 },
-  {  ISINCode: 3,
+  {  ISINCode: 2,
     StockActivity: true,
     StockCode: '123',
     StockId: 12,
@@ -25,7 +66,7 @@ export let holding: Holding[] = [{  ISINCode: 2,
     StockRemainingLimit: 15, HoldingNumber: 2, InsuredShares: 501, NumberOfShares: 500, PendingShares: 0, UninsuredShares: 0, Value: 0,
     NumberOfSharesToInsure: 0, NumberOfSharesToCancel: 0, Premium: 0, MovementType: ''
   },
-  {  ISINCode: 1,
+  {  ISINCode: 3,
     StockActivity: true,
     StockCode: '123',
     StockId: 12,

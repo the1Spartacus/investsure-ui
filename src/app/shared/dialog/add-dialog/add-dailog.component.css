@@ -1,0 +1,10 @@
+.add button {
+  width: 108px;
+  height: auto;
+  border-radius: 38px;
+  text-align: center;
+  font-size: 14px;
+  color: aliceblue;
+  background-color: #286491;
+  margin-top: 1%;
+}

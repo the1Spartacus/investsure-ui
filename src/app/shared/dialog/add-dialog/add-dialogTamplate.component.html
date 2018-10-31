@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>ACCOUNT HOLDING</h1>
+<h2 mat-dialog-title>Add account holding details</h2>
+<mat-dialog-content class="mat-typography">
+  <p>
+    <mat-form-field  appearance="outline">
+        <mat-select placeholder="STOCK" [(ngModel)]="selectedStock">
+          <mat-option *ngFor="let stock of Stocks" [value]="stock">{{stock.StockName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+</p>
+  <p>
+      <mat-form-field appearance="outline">
+          <mat-label>NUMBER OF SHARES</mat-label>
+          <input matInput placeholder="Placeholder" [(ngModel)]="numberOfShares">
+        </mat-form-field>
+  </p>
+  <!-- <p>
+      <mat-form-field appearance="outline">
+          <mat-label>PRICE</mat-label>
+          <input matInput placeholder="Placeholder" [value]="selectedStock">
+        </mat-form-field>
+  </p> -->
+
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button class="cancelButton" mat-button mat-dialog-close (click)="removeHolding()">Cancel</button>
+  <button class="addButton" mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="addHolding()">+</button>
+</mat-dialog-actions>

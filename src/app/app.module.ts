@@ -12,6 +12,9 @@ import {MatInputModule} from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
 import {FormsModule } from '@angular/forms';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+
 
 import { AppComponent } from './app.component';
 import { AccountComponent } from './layer/account_holding/account.component';
@@ -23,6 +26,9 @@ import { ClaimService } from './shared/services/claim.service';
 import { NotFoundComponent } from './shared/errors/not-found.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PolicyService } from './shared/services/policy.service';
+import { AddDialogTanplateComponent, AddDialogComponent } from './shared/dialog/add-dialog/add-dialog.component';
+import { StockService } from './shared/services/stock.service';
+
 
 
 
@@ -34,7 +40,9 @@ import { PolicyService } from './shared/services/policy.service';
     ClaimComponent,
     DialogComponent,
     DialogTanplateComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    AddDialogTanplateComponent,
+    AddDialogComponent
 
   ],
   imports: [
@@ -51,13 +59,19 @@ import { PolicyService } from './shared/services/policy.service';
     MatInputModule,
     MatDialogModule,
     AppRoutingModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatSelectModule
 
   ],
-  entryComponents: [
-    DialogTanplateComponent
+  exports: [
+    MatFormFieldModule
   ],
-  providers: [ClaimService, PolicyService],
+  entryComponents: [
+    DialogTanplateComponent,
+    AddDialogTanplateComponent
+  ],
+  providers: [ClaimService, PolicyService, StockService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
