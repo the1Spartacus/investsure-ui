@@ -82,3 +82,6 @@ mat-label{
   margin-top: -5%;
 }
 
+.errorColor {
+  color: red;
+}

@@ -19,7 +19,7 @@
     <mat-list>
         <mat-list-item>
             <p mat-line><strong>Auto-renew insurance: </strong>
-              <mat-slide-toggle>ON</mat-slide-toggle>
+              <mat-slide-toggle  [(ngModel)]="policydetail.policy.IsAutoRenewal">ON</mat-slide-toggle>
             </p>
             <p mat-line><strong>Estimated  renewal cost:</strong> {{policydetail.policy.RenewalAmount}} </p>
             <p mat-line><strong>Available funds:</strong> {{policydetail.account.AccountBalance}}</p>
@@ -32,6 +32,7 @@
 <div>
   <mat-card>
     <h5>ACCOUNT HOLDINGS</h5>
+
     <div class="mat-elevation-z8">
 
     <table mat-table [dataSource]="policyDetailData" class="mat-elevation-z8">
@@ -86,7 +87,7 @@
             <th mat-header-cell *matHeaderCellDef> NUMBER TO<br> INSURE </th>
             <td mat-cell *matCellDef="let holding">
               <input type="number" min="0" max="{{holding.UninsuredShares}}" [disabled]="insureDisable(holding)" matInput  [(ngModel)]="holding.NumberOfSharesToInsure" >
-              <div *ngIf="numberToInsureError(holding)">{{errorMessage}}</div>
+              <div class="errorColor" *ngIf="numberToInsureError(holding)">{{errorMessage}}</div>
             </td>
           </ng-container>
 
@@ -95,7 +96,7 @@
             <th mat-header-cell *matHeaderCellDef> NUMBER TO<br> CANCEL </th>
             <td mat-cell *matCellDef="let holding">
               <input type="number" min="0" max="{{holding.InsuredShares}}" [disabled]="cancelDisable(holding)" matInput  [(ngModel)]="holding.NumberOfSharesToCancel" >
-            <div *ngIf="numberToCancelError(holding)">{{errorMessage}}</div>
+            <div class="errorColor" *ngIf="numberToCancelError(holding)">{{errorMessage}}</div>
             </td>
           </ng-container>
 
@@ -112,6 +113,7 @@
 
       <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </div>
+
       <div class="add"> <button class="add" mat-raised-button>+</button></div>
       <div class="container_submit">
         <div class="total">
@@ -119,7 +121,7 @@
           <input matInput placeholder="0" [(ngModel)]="Total" >
         </div>
         <div class="submit">
-           <button mat-raised-button [disabled]="error1 || error2"  (click)="submit()">SUBMIT</button>
+           <button mat-raised-button (click)="submit()">SUBMIT</button>
         </div>
       </div>
   </mat-card>

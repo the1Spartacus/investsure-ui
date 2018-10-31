@@ -1,9 +1,14 @@
 import { Component, ViewChild, OnInit, Input, Output } from '@angular/core';
-import { ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router, Routes } from '@angular/router';
 import { Holding } from '../../shared/models/holding.model';
 import {MatTableDataSource, MatPaginator} from '@angular/material';
-import { EventEmitter } from 'protractor';
 import { PolicyService } from '../../shared/services/policy.service';
+import { PolicyDetail } from '../../shared/models/policyDetail.model';
+import { promise } from 'protractor';
+import { Policy } from '../../shared/models/policy.model';
+import { Investor } from '../../shared/models/investor.model';
+import { Account } from '../../shared/models/account.model';
+import { AngularWaitBarrier } from 'blocking-proxy/built/lib/angular_wait_barrier';
 
 
 @Component({
@@ -13,9 +18,31 @@ import { PolicyService } from '../../shared/services/policy.service';
 })
 export class AccountComponent implements OnInit {
 
+  // declarations
+  pending: string[];
+  displayedColumns: string[];
+  errorMessage: string;
+  disableSubmitBtn: boolean;
+  policydetail: PolicyDetail = {} as PolicyDetail;
+  policyDetailData: MatTableDataSource<Holding>;
+  Total = 0;
+
+
 // constractor
   constructor(private activatedRoute: ActivatedRoute, private router: Router, private policyService: PolicyService ) {
     let RequestId: string;
+
+    activatedRoute.params.subscribe(val => {
+      // put the code from `ngOnInit` here
+      console.log(val.RequestId);
+      this.policydetail = this.policyService.getPolicyDetails();
+      this.policyDetailData = new MatTableDataSource<Holding>(this.policydetail.holdings);
+    });
+
+    console.log('constructor');
+    this.displayedColumns = ['position', 'share', 'value', 'totalNumShares', 'uninsured', 'pending', 'insured', 'insure', 'cancel', 'costs'];
+
+
 
     sessionStorage.clear();
 
@@ -27,47 +54,43 @@ export class AccountComponent implements OnInit {
       sessionStorage.setItem('RequestId', RequestId);
     }
   }
-  // declarations
-  pending: string[];
-  displayedColumns: string[] = ['position', 'share', 'value', 'totalNumShares', 'uninsured', 'pending', 'insured', 'insure', 'cancel', 'costs'];
-  errorMessage: string;
-  error1: boolean;
-  error2: boolean;
-  disableSubmitBtn: boolean;
-  policydetail = this.policyService.getPolicyDetails();
-  policyDetailData = new MatTableDataSource(this.policydetail.holdings);
-  Total = 0;
+
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() {
+    console.log('init method');
     this.policyDetailData.paginator = this.paginator;
+
+    // if (this.policydetail === null) {
+    //   this.policydetail = this.policyService.getPolicyDetails();
+    // }
   }
 
   applyFilter(filterValue: string) {
     this.policyDetailData.filter = filterValue.trim().toLowerCase();
   }
 
-  OnAutoRenewalChange() {
-
-  }
-
   // functions
   // submit button function
-  submit() {
+  async submit() {
       // console.log('policy  details', this.policydetail);
-      this.policyService.savePolicyMovements(this.policydetail);
+      // let respCode: string;
 
-      // Check service response for HTTP 200
-      // If successful, redirect to main page with original parameters
-      this.router.navigate(['/insurance/RequestId/ABCD1234/ShareNet']);
+      const resp = await this.policyService.savePolicyMovements({...this.policydetail});
 
+      if (resp === '200') {
+        // this.router.navigate(['insurance/RequestId/ABCD123/ShareNet']);
+        this.policydetail = this.policyService.getPolicyDetails();
+        this.policyDetailData = new MatTableDataSource<Holding>(this.policydetail.holdings);
+      }
+
+      console.log('auto renewal ' + this.policydetail.policy.IsAutoRenewal);
       console.log('total is: ' + this.Total);
   }
   // oln change function
   onChangeValidation(row) {
     this.calculatePremium(row);
-    this.error1 = this.numberToInsureError(row);
-    this.error2 = this.numberToCancelError(row);
   }
 
   cancelDisable(row): boolean {
@@ -94,7 +117,6 @@ export class AccountComponent implements OnInit {
 
   numberToInsureError(row) {
     const holdings = <Holding>row;
-    this.disableSubmitBtn = false;
     if ( holdings.NumberOfSharesToInsure > holdings.UninsuredShares) {
       this.errorMessage = 'error you can not insure more than your uninsured share';
       console.log(this.errorMessage);
@@ -108,7 +130,6 @@ export class AccountComponent implements OnInit {
 
   numberToCancelError(row) {
     const holdings = <Holding>row;
-    this.disableSubmitBtn = false;
     if ( holdings.NumberOfSharesToCancel > holdings.InsuredShares) {
       this.errorMessage = 'error you can not cancel more than your insured shares';
       console.log(this.errorMessage );

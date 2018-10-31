@@ -58,7 +58,7 @@ export let policy: Policy = {
   AnniversaryDate: '2010/may 01',
   PolicyNumber: '12344',
   RenewalAmount: 800,
-  IsAutoRenewal: false,
+  IsAutoRenewal: true,
 };
 export let policyDetail: PolicyDetail = {
   account: account,
