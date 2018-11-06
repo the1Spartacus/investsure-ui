@@ -11,8 +11,8 @@ export let stocks: Stock[] = [{
   StockCode: '1234',
   StockId: 4432,
   StockName: 'BIG BANANA FILMS',
-  StockPrice: 2000,
-  StockRate: 10,
+  StockPrice: 34.00,
+  StockRate: 0.0056,
   StockRemainingLimit: 50
 },
 {
@@ -21,8 +21,8 @@ export let stocks: Stock[] = [{
   StockCode: '1234',
   StockId: 4432,
   StockName: 'LAFARGE',
-  StockPrice: 1800,
-  StockRate: 10,
+  StockPrice: 98.34,
+  StockRate: 0.0056,
   StockRemainingLimit: 50
 },
 {
@@ -31,19 +31,49 @@ export let stocks: Stock[] = [{
   StockCode: '1234',
   StockId: 4432,
   StockName: 'MEDA PHARMA',
-  StockPrice: 1000,
-  StockRate: 10,
+  StockPrice: 45.60,
+  StockRate: 0.0056,
   StockRemainingLimit: 50
 },
 {
-  ISINCode: 6,
+  ISINCode: 7,
   StockActivity: true,
   StockCode: '1234',
   StockId: 4432,
   StockName: 'NETFLIX',
   StockPrice: 500,
-  StockRate: 10,
+  StockRate: 0.0056,
   StockRemainingLimit: 50
+},
+{
+  ISINCode: 1,
+  StockActivity: true,
+  StockCode: '123',
+  StockId: 12,
+  StockName: 'SASOL',
+  StockPrice: 564.87,
+  StockRate: 0.0056,
+  StockRemainingLimit: 15
+},
+{
+  ISINCode: 2,
+  StockActivity: true,
+  StockCode: '123',
+  StockId: 12,
+  StockName: 'CAPITEC',
+  StockPrice: 945.87,
+  StockRate: 0.0056,
+  StockRemainingLimit: 15
+},
+{
+  ISINCode: 3,
+  StockActivity: true,
+  StockCode: '123',
+  StockId: 12,
+  StockName: 'MTN',
+  StockPrice: 87.66,
+  StockRate: 0.0056,
+  StockRemainingLimit: 15
 }];
 
 export let holding: Holding[] = [{  ISINCode: 1,
@@ -51,30 +81,30 @@ export let holding: Holding[] = [{  ISINCode: 1,
   StockCode: '123',
   StockId: 12,
   StockName: 'SASOL',
-  StockPrice: 1000,
+  StockPrice: 564.87,
   StockRate: 10,
   StockRemainingLimit: 15, HoldingNumber: 1, InsuredShares: 50, NumberOfShares: 500, PendingShares: 100, UninsuredShares: 450, Value: 0,
-  NumberOfSharesToInsure: 0, NumberOfSharesToCancel: 0, Premium: 0, MovementType: ''
+  NumberOfSharesToInsure: 0, NumberOfSharesToCancel: 0, Premium: 0, MovementType: '', IsNewHolding: false
 },
   {  ISINCode: 2,
     StockActivity: true,
     StockCode: '123',
     StockId: 12,
     StockName: 'CAPITEC',
-    StockPrice: 1000,
-    StockRate: 10,
+    StockPrice: 945.87,
+    StockRate: 0.0056,
     StockRemainingLimit: 15, HoldingNumber: 2, InsuredShares: 501, NumberOfShares: 500, PendingShares: 0, UninsuredShares: 0, Value: 0,
-    NumberOfSharesToInsure: 0, NumberOfSharesToCancel: 0, Premium: 0, MovementType: ''
+    NumberOfSharesToInsure: 0, NumberOfSharesToCancel: 0, Premium: 0, MovementType: '', IsNewHolding: false
   },
   {  ISINCode: 3,
     StockActivity: true,
     StockCode: '123',
     StockId: 12,
     StockName: 'MTN',
-    StockPrice: 1000,
-    StockRate: 10,
+    StockPrice: 87.66,
+    StockRate: 0.0056,
     StockRemainingLimit: 15, HoldingNumber: 3, InsuredShares: 5001, NumberOfShares: 500, PendingShares: 0, UninsuredShares: 0, Value: 0,
-    NumberOfSharesToInsure: 0, NumberOfSharesToCancel: 0, Premium: 0,  MovementType: ''
+    NumberOfSharesToInsure: 0, NumberOfSharesToCancel: 0, Premium: 0,  MovementType: '', IsNewHolding: false
   },
 ];
 
@@ -106,4 +136,5 @@ export let policyDetail: PolicyDetail = {
   holdings: holding,
   investor: investor,
   policy: policy,
+  PolicyExist: false
 };

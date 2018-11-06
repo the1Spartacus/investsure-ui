@@ -20,14 +20,15 @@ import { AppComponent } from './app.component';
 import { AccountComponent } from './layer/account_holding/account.component';
 import { ClaimComponent } from './layer/insurance_claim/claim.component';
 
-import { DialogComponent } from './shared/dialog/dialog.component';
-import { DialogTanplateComponent } from './shared/dialog/dialog.component';
+import { DialogComponent } from './shared/dialog/policy-dialog/dialog.component';
+import { DialogTanplateComponent } from './shared/dialog/policy-dialog/dialog.component';
 import { ClaimService } from './shared/services/claim.service';
 import { NotFoundComponent } from './shared/errors/not-found.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PolicyService } from './shared/services/policy.service';
 import { AddDialogTanplateComponent, AddDialogComponent } from './shared/dialog/add-dialog/add-dialog.component';
 import { StockService } from './shared/services/stock.service';
+import { MasterPageComponent } from './layer/master/masterPage.component';
 
 
 
@@ -42,7 +43,8 @@ import { StockService } from './shared/services/stock.service';
     DialogTanplateComponent,
     NotFoundComponent,
     AddDialogTanplateComponent,
-    AddDialogComponent
+    AddDialogComponent,
+    MasterPageComponent
 
   ],
   imports: [

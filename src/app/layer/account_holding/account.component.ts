@@ -1,15 +1,11 @@
-import { Component, ViewChild, OnInit, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
-import { ActivatedRoute, Router, Routes } from '@angular/router';
+import { Component, ViewChild, OnInit  } from '@angular/core';
+import { ActivatedRoute, Router} from '@angular/router';
 import { Holding } from '../../shared/models/holding.model';
 import {MatTableDataSource, MatPaginator} from '@angular/material';
 import { PolicyService } from '../../shared/services/policy.service';
 import { PolicyDetail } from '../../shared/models/policyDetail.model';
-import { promise } from 'protractor';
-import { Policy } from '../../shared/models/policy.model';
-import { Investor } from '../../shared/models/investor.model';
-import { Account } from '../../shared/models/account.model';
-import { AngularWaitBarrier } from 'blocking-proxy/built/lib/angular_wait_barrier';
 import { HoldingCache } from 'src/app/shared/models/holding.cache';
+import { isNullOrUndefined } from 'util';
 
 
 @Component({
@@ -29,16 +25,18 @@ export class AccountComponent implements OnInit {
   Total = 0;
   HoldingsCount: number;
   Counter = 0;
-
-
+  PolicyAgreed: boolean;
+  // isPolicyAgreed: boolean;
 // constractor
-  constructor(private activatedRoute: ActivatedRoute, private router: Router, private policyService: PolicyService ) {
+  constructor(private activatedRoute: ActivatedRoute, private policyService: PolicyService ) {
     let RequestId: string;
 
     activatedRoute.params.subscribe(val => {
+      console.log('acctive route');
       // put the code from `ngOnInit` here
       console.log(val.RequestId);
       this.policydetail = this.policyService.getPolicyDetails();
+      this.PolicyAgreed = this.policyService.getPolicyDetails().PolicyExist;
       this.policyDetailData = new MatTableDataSource<Holding>(this.policydetail.holdings);
       this.HoldingsCount = this.policydetail.holdings.length;
     });
@@ -63,16 +61,7 @@ export class AccountComponent implements OnInit {
   ngOnInit() {
     console.log('init method');
     this.policyDetailData.paginator = this.paginator;
-
-    // if (this.policydetail === null) {
-    //   this.policydetail = this.policyService.getPolicyDetails();
-    // }
   }
-
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   console.log('Inside OnChange Event');
-  // }
-
   applyFilter(filterValue: string) {
     this.policyDetailData.filter = filterValue.trim().toLowerCase();
   }
@@ -80,9 +69,6 @@ export class AccountComponent implements OnInit {
   // functions
   // submit button function
   async submit() {
-      // console.log('policy  details', this.policydetail);
-      // let respCode: string;
-
       const resp = await this.policyService.savePolicyMovements({...this.policydetail});
 
       if (resp === '200') {
@@ -90,7 +76,7 @@ export class AccountComponent implements OnInit {
         this.policydetail = this.policyService.getPolicyDetails();
         this.policyDetailData = new MatTableDataSource<Holding>(this.policydetail.holdings);
       }
-
+      this.policyDetailData.paginator = this.paginator;
       console.log('auto renewal ' + this.policydetail.policy.IsAutoRenewal);
       console.log('total is: ' + this.Total);
   }
@@ -162,6 +148,13 @@ export class AccountComponent implements OnInit {
     console.log(holdingEmpty);
     console.log(HoldingCache.NewHolding);
     const newHolding: Holding = HoldingCache.NewHolding;
+    newHolding.IsNewHolding = true;
+
+    console.log('Validating Num Of Shares:: ', newHolding.NumberOfShares);
+    if (isNullOrUndefined(newHolding.NumberOfShares) || isNaN(newHolding.NumberOfShares)) {
+        console.log('Going in here');
+        return;
+    }
 
     const index: number = this.findHolding(newHolding);
 
@@ -169,6 +162,7 @@ export class AccountComponent implements OnInit {
       console.log('Holding Exist');
       this.policydetail.holdings[index].NumberOfShares += +newHolding.NumberOfShares;
       this.policydetail.holdings[index].UninsuredShares += +newHolding.NumberOfShares;
+      this.policydetail.holdings[index].Value += +newHolding.NumberOfShares * newHolding.StockPrice;
     } else {
 
       console.log('Holding Does Not Exist');
@@ -181,21 +175,26 @@ export class AccountComponent implements OnInit {
       newHolding.UninsuredShares = +newHolding.UninsuredShares;
       newHolding.HoldingNumber = 0;
       newHolding.Value = newHolding.NumberOfShares * newHolding.StockPrice;
-      // this.policydetail.holdings.push(newHolding);
-      this.HoldingsCount = this.policydetail.holdings.length;
       this.policyDetailData.data.push(newHolding);
+      this.policyDetailData = new MatTableDataSource<Holding>(this.policyDetailData.data);
+      this.HoldingsCount = this.policydetail.holdings.length;
     }
-
     console.log(this.policyDetailData.data);
+    this.policyDetailData.paginator = this.paginator;
   }
+
 
   findHolding(_holding: Holding) {
     for (let index = 0; index < this.policydetail.holdings.length; index++) {
-      if (this.policydetail.holdings[index].ISINCode === _holding.ISINCode) {
+      if (this.policydetail.holdings[index].ISINCode === _holding.ISINCode &&
+          this.policydetail.holdings[index].IsNewHolding === _holding.IsNewHolding) {
         return index;
       }
     }
 
     return -1;
+  }
+   policyWordingHandler($event) {
+    this.PolicyAgreed = $event;
   }
 }

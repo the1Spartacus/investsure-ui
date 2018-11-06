@@ -11,4 +11,5 @@ export interface Holding extends Stock {
   NumberOfSharesToCancel: number;
   Premium: number;
   MovementType: string;
-  }
+  IsNewHolding?: boolean;
+}

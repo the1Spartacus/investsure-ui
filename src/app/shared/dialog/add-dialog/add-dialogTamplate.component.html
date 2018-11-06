@@ -14,15 +14,8 @@
           <input matInput placeholder="Placeholder" [(ngModel)]="numberOfShares">
         </mat-form-field>
   </p>
-  <!-- <p>
-      <mat-form-field appearance="outline">
-          <mat-label>PRICE</mat-label>
-          <input matInput placeholder="Placeholder" [value]="selectedStock">
-        </mat-form-field>
-  </p> -->
-
 </mat-dialog-content>
 <mat-dialog-actions align="center">
-  <button class="cancelButton" mat-button mat-dialog-close (click)="removeHolding()">Cancel</button>
+  <button class="cancelButton" mat-button mat-dialog-close>Cancel</button>
   <button class="addButton" mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="addHolding()">+</button>
 </mat-dialog-actions>

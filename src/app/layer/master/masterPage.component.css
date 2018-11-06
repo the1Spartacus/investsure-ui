@@ -1,0 +1,12 @@
+.logo {
+  object-fit: contain;
+  width: 200px;
+  height: 223px;
+  margin: 8%;
+  margin-bottom: -5%;
+  margin-top: -5%;
+}
+mat-divider {
+  margin: auto;
+  width: 85%;
+}

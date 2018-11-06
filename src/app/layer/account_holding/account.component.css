@@ -15,10 +15,6 @@ mat-card{
 .container div {
   display: inline-block;
 }
-mat-divider {
-   margin: auto;
-   width: 85%;
-}
 table {
   width: 100%;
 }
@@ -64,6 +60,9 @@ mat-label{
 .submit {
   margin-left: -11%;
 }
+.errorColor {
+  color: red;
+}
 .logo {
   object-fit: contain;
   width: 200px;
@@ -71,8 +70,4 @@ mat-label{
   margin: 8%;
   margin-bottom: -5%;
   margin-top: -5%;
-}
-
-.errorColor {
-  color: red;
 }

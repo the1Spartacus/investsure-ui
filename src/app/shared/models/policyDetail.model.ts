@@ -8,4 +8,5 @@ export interface PolicyDetail {
   holdings: Holding[];
   investor: Investor;
   policy: Policy;
+  PolicyExist: boolean;
 }

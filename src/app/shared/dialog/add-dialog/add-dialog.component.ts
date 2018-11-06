@@ -6,10 +6,6 @@ import { Stock } from '../../models/stock.model';
 import { Holding } from '../../models/holding.model';
 import { isNullOrUndefined } from 'util';
 
-
-/**
- * @title Dialog with header, scrollable content and actions
- */
 @Component({
   selector: 'app-add-dialog',
   templateUrl: 'add-dialog.component.html',
@@ -28,6 +24,7 @@ export class AddDialogComponent {
       console.log(`Dialog result: ${result}`);
       this.holdingAdded.emit(isNullOrUndefined(HoldingCache.NewHolding));
     });
+
   }
 }
 
@@ -40,33 +37,22 @@ export class AddDialogTanplateComponent implements OnInit {
     selectedStock: Stock;
     numberOfShares: 0;
     Stocks: Stock[];
-
+    closeValue = true;
     constructor(private stockService: StockService) {
-        this.Stocks = stockService.getStocks();
+        this.Stocks = this.stockService.getStocks();
     }
 
     ngOnInit(): void {
       HoldingCache.NewHolding = {} as Holding;
     }
-
     addHolding() {
-      // console.log(this.numberOfShares);
-      // console.log(this.selectedStock);
-
-      // HoldingCache.NewHolding = this.selectedStock;
-      if (!isNullOrUndefined(this.numberOfShares)) {
-          Object.assign(HoldingCache.NewHolding, this.selectedStock);
-          HoldingCache.NewHolding.NumberOfShares = this.numberOfShares;
-          HoldingCache.NewHolding.UninsuredShares = this.numberOfShares;
-
-          const h: Holding = {} as Holding;
-          Object.assign(h, HoldingCache.NewHolding);
+      if (!isNullOrUndefined(this.numberOfShares) || this.numberOfShares !== NaN) {
+          if (this.numberOfShares > 0) {
+              Object.assign(HoldingCache.NewHolding, this.selectedStock);
+              HoldingCache.NewHolding.NumberOfShares = this.numberOfShares;
+              HoldingCache.NewHolding.UninsuredShares = this.numberOfShares;
+          }
       }
-      // console.log(h);
     }
 
-    removeHolding() {
-      // console.log(this.numberOfShares);
-      // console.log(this.selectedStock);
-    }
 }

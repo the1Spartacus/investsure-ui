@@ -1,4 +1,4 @@
-<app-dialog></app-dialog>
+<app-dialog (agree)="policyWordingHandler($event)"></app-dialog>
 <div>
   <img class="logo" src="assets\InvestSure.png">
 </div>
@@ -6,7 +6,6 @@
   <div class="client-info">
     <mat-list>
       <mat-list-item>
-          <h3 mat-line><strong>CLIENT INFO</strong></h3>
           <p mat-line><strong>Name:</strong> {{policydetail.investor.Name}}</p>
           <p mat-line><strong>ID number:</strong> {{policydetail.investor.IdNumber}}</p>
           <p mat-line><strong>E-mail:</strong> {{policydetail.investor.Email}}</p>
@@ -28,7 +27,6 @@
         </mat-list>
   </div>
 </div>
-<mat-divider></mat-divider>
 <div>
   <mat-card>
     <h5>ACCOUNT HOLDINGS [{{HoldingsCount}}]</h5>
@@ -111,7 +109,7 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" (change)="onChangeValidation(row)"></tr>
       </table>
 
-      <mat-paginator [pageSizeOptions]="[2, 10, 20]" showFirstLastButtons></mat-paginator>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </div>
     <!-- place add template here -->
       <app-add-dialog (holdingAdded)="AddHoldingHandler($event)"></app-add-dialog>
@@ -121,14 +119,13 @@
           <input matInput placeholder="0" [(ngModel)]="Total" >
         </div>
         <div class="submit">
-           <button mat-raised-button (click)="submit()">SUBMIT</button>
-        </div>
+           <button mat-raised-button (click)="submit()" [disabled]="PolicyAgreed">SUBMIT</button>
+           <div class="errorColor" *ngIf="PolicyAgreed">agree with the policy to submit</div>
+          </div>
       </div>
   </mat-card>
 
 </div>
 
 
-<mat-divider></mat-divider>
-<app-claim></app-claim>
-<mat-divider></mat-divider>
+
