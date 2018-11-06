@@ -49,49 +49,30 @@
             <!-- Insured Column -->
           <ng-container matColumnDef="TriggerPrice">
               <th mat-header-cell *matHeaderCellDef> TRIGGER<br> PRICE </th>
-              <td mat-cell *matCellDef="let element">R {{element.TriggerPrice}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.TriggerPrice | currency : "R"}} </td>
             </ng-container>
 
-            <!-- Number to  Insure Column -->
+
           <ng-container matColumnDef="StockPrice">
               <th mat-header-cell *matHeaderCellDef> EST.CURRENT <br>PRICE </th>
-              <td mat-cell *matCellDef="let element">R {{element.StockPrice}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.StockPrice | currency : "R"        }} </td>
             </ng-container>
 
-            <!-- Number to Cancel Column -->
+
           <ng-container matColumnDef="ClaimPerShare">
               <th mat-header-cell *matHeaderCellDef> CLAIM PER<br> SHARE </th>
-              <td mat-cell *matCellDef="let element">R {{element.ClaimPerShare}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.ClaimPerShare | currency : "R" }} </td>
             </ng-container>
 
-            <!-- Estimated Costs Column -->
+
           <ng-container matColumnDef="ClaimAmount">
               <th mat-header-cell *matHeaderCellDef> EST.CLAIM<br> VALUE </th>
-              <td mat-cell *matCellDef="let element">R {{element.ClaimAmount}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.ClaimAmount | currency : "R"}} </td>
             </ng-container>
-
-              <!-- Estimated Costs Column -->
-          <ng-container matColumnDef="TransactionDate">
-            <th mat-header-cell *matHeaderCellDef>TRANSACTION<br> DATE </th>
-            <td mat-cell *matCellDef="let element">{{element.TransactionDate}} </td>
-          </ng-container>
-
-            <!-- Estimated Costs Column -->
-            <ng-container matColumnDef="TotalInsuredShares">
-              <th mat-header-cell *matHeaderCellDef> TOTAL INSURED<br> SHARES </th>
-              <td mat-cell *matCellDef="let element">{{element.TotalInsuredShares}} </td>
-            </ng-container>
-
-              <!-- Estimated Costs Column -->
-          <ng-container matColumnDef="OpeningPrice">
-            <th mat-header-cell *matHeaderCellDef> OPENING<br> PRICE </th>
-            <td mat-cell *matCellDef="let element">R {{element.OpeningPrice}} </td>
-          </ng-container>
-
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-        <mat-paginator [pageSizeOptions]="[2, 5, 10]" showFirstLastButtons></mat-paginator>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
       </div>
     </mat-card>
 </div>

@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AccountComponent } from './layer/account_holding/account.component';
 import { NotFoundComponent } from './shared/errors/not-found.component';
 import { MasterPageComponent } from './layer/master/masterPage.component';
+import { TermsAndConditionsComponent } from './layer/terms_and_conditions/terms_and_conditions.component';
 
 
 const appRoutes: Routes = [
   { path: 'insurance/RequestId/:RequestId/:Broker', component: MasterPageComponent },
-  // { path: '', component: AccountComponent },
+  { path: 'account/RequestId/:RequestId/:Broker', component: TermsAndConditionsComponent },
   { path: '**', component: NotFoundComponent }
 ];
 

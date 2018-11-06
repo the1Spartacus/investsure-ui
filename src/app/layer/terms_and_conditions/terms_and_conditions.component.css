@@ -1,0 +1,20 @@
+.main {
+  width: 80%;
+  margin: auto;
+}
+.accept {
+  width: 108px;
+  height: auto;
+  border-radius: 38px;
+  text-align: center;
+  font-size: 14px;
+  color: aliceblue;
+  background-color: #286491;
+}
+.cancel{
+  width: 108px;
+  height: auto;
+  border-radius: 38px;
+  text-align: center;
+  font-size: 14px;
+}

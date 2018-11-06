@@ -14,6 +14,7 @@ import {FormsModule } from '@angular/forms';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 
 import { AppComponent } from './app.component';
@@ -29,6 +30,8 @@ import { PolicyService } from './shared/services/policy.service';
 import { AddDialogTanplateComponent, AddDialogComponent } from './shared/dialog/add-dialog/add-dialog.component';
 import { StockService } from './shared/services/stock.service';
 import { MasterPageComponent } from './layer/master/masterPage.component';
+import { TermsAndConditionsComponent } from './layer/terms_and_conditions/terms_and_conditions.component';
+
 
 
 
@@ -44,7 +47,8 @@ import { MasterPageComponent } from './layer/master/masterPage.component';
     NotFoundComponent,
     AddDialogTanplateComponent,
     AddDialogComponent,
-    MasterPageComponent
+    MasterPageComponent,
+    TermsAndConditionsComponent
 
   ],
   imports: [
@@ -63,7 +67,8 @@ import { MasterPageComponent } from './layer/master/masterPage.component';
     AppRoutingModule,
     MatPaginatorModule,
     MatFormFieldModule,
-    MatSelectModule
+    MatSelectModule,
+    MatToolbarModule
 
   ],
   exports: [

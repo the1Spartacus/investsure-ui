@@ -9,7 +9,7 @@ import {MatTableDataSource, MatPaginator} from '@angular/material';
 })
 
 export class ClaimComponent  implements OnInit {
-  displayedColumns: string[] = ['ISINCode', 'StockName', 'FraudInTheNews', 'ClaimTriggered', 'TriggeredDate', 'TotalClaimableShares', 'TriggerPrice', 'StockPrice', 'ClaimPerShare', 'ClaimAmount', 'TransactionDate', 'TotalInsuredShares', 'OpeningPrice',
+  displayedColumns: string[] = ['ISINCode', 'StockName', 'FraudInTheNews', 'ClaimTriggered', 'TriggeredDate', 'TotalClaimableShares', 'TriggerPrice', 'StockPrice', 'ClaimPerShare', 'ClaimAmount',
      ];
    constructor(private claimService: ClaimService ) { }
    dataSource = new MatTableDataSource(this.claimService.getClaim());
