@@ -6,6 +6,7 @@ import { PolicyService } from '../../shared/services/policy.service';
 import { PolicyDetail } from '../../shared/models/policyDetail.model';
 import { HoldingCache } from 'src/app/shared/models/holding.cache';
 import { isNullOrUndefined } from 'util';
+import { policyDetail } from '../../shared/mockData/mockHolding';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { isNullOrUndefined } from 'util';
 export class AccountComponent implements OnInit {
 
   // declarations
-  pending: string[];
+  // pending: string[];
   displayedColumns: string[];
   errorMessage: string;
   disableSubmitBtn: boolean;
@@ -26,20 +27,21 @@ export class AccountComponent implements OnInit {
   HoldingsCount: number;
   Counter = 0;
   PolicyAgreed: boolean;
+  resp: string;
   // isPolicyAgreed: boolean;
 // constractor
   constructor(private activatedRoute: ActivatedRoute, private policyService: PolicyService ) {
     let RequestId: string;
 
-    activatedRoute.params.subscribe(val => {
+   // activatedRoute.params.subscribe(val => {
       console.log('acctive route');
       // put the code from `ngOnInit` here
-      console.log(val.RequestId);
+     // console.log(val.RequestId);
       this.policydetail = this.policyService.getPolicyDetails();
-      this.PolicyAgreed = this.policyService.getPolicyDetails().PolicyExist;
+      this.PolicyAgreed = this.policydetail.PolicyExist;
       this.policyDetailData = new MatTableDataSource<Holding>(this.policydetail.holdings);
       this.HoldingsCount = this.policydetail.holdings.length;
-    });
+   // });
 
     console.log('constructor');
     this.displayedColumns = ['position', 'share', 'value', 'totalNumShares', 'uninsured', 'pending', 'insured', 'insure', 'cancel', 'costs'];
@@ -69,16 +71,17 @@ export class AccountComponent implements OnInit {
   // functions
   // submit button function
   async submit() {
-      const resp = await this.policyService.savePolicyMovements({...this.policydetail});
+       this.resp = await this.policyService.savePolicyMovements({...this.policydetail});
 
-      if (resp === '200') {
+      if (this.resp === '200') {
         // this.router.navigate(['insurance/RequestId/ABCD123/ShareNet']);
         this.policydetail = this.policyService.getPolicyDetails();
         this.policyDetailData = new MatTableDataSource<Holding>(this.policydetail.holdings);
-      }
+       }
       this.policyDetailData.paginator = this.paginator;
       console.log('auto renewal ' + this.policydetail.policy.IsAutoRenewal);
       console.log('total is: ' + this.Total);
+      this.Total = 0;
   }
   // oln change function
   onChangeValidation(row) {

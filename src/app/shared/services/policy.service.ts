@@ -38,11 +38,9 @@ export class PolicyService {
     return policyDetail;
   }
 
-  // DoesPolicyExist(): boolean {
-  //  if (this.getPolicyDetails().PolicyExist === true) {
-  //    return true;
-  //  } else { return false; }
-  // }
+  DoesPolicyExist(): boolean {
+   return true;
+  }
 
 
   async savePolicyMovements( _policyDetail: PolicyDetail): Promise<any> {

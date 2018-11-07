@@ -17,6 +17,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatToolbarModule} from '@angular/material/toolbar';
 
 
+
 import { AppComponent } from './app.component';
 import { AccountComponent } from './layer/account_holding/account.component';
 import { ClaimComponent } from './layer/insurance_claim/claim.component';
@@ -31,6 +32,8 @@ import { AddDialogTanplateComponent, AddDialogComponent } from './shared/dialog/
 import { StockService } from './shared/services/stock.service';
 import { MasterPageComponent } from './layer/master/masterPage.component';
 import { TermsAndConditionsComponent } from './layer/terms_and_conditions/terms_and_conditions.component';
+import { from } from 'rxjs';
+import { APP_BASE_HREF } from '@angular/common';
 
 
 
@@ -78,7 +81,7 @@ import { TermsAndConditionsComponent } from './layer/terms_and_conditions/terms_
     DialogTanplateComponent,
     AddDialogTanplateComponent
   ],
-  providers: [ClaimService, PolicyService, StockService],
+  providers: [ClaimService, PolicyService, StockService, {provide: APP_BASE_HREF, useValue: '/insurance/RequestId/:RequestId/:Broker'}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
