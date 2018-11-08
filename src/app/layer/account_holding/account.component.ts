@@ -71,7 +71,7 @@ export class AccountComponent implements OnInit {
   // functions
   // submit button function
   async submit() {
-       this.resp = await this.policyService.savePolicyMovements({...this.policydetail});
+       this.resp = await this.policyService.savePolicyMovements(this.policydetail);
 
       if (this.resp === '200') {
         // this.router.navigate(['insurance/RequestId/ABCD123/ShareNet']);
@@ -128,11 +128,11 @@ export class AccountComponent implements OnInit {
     if ( holdings.NumberOfSharesToCancel > holdings.InsuredShares) {
       this.errorMessage = 'error you can not cancel more than your insured shares';
       console.log(this.errorMessage );
-      return true;
+      return false;
       } else if (holdings.NumberOfSharesToCancel < 0) {
       this.errorMessage = 'error you can not cancel less than 0';
       console.log(this.errorMessage );
-      return true;
+      return false;
     }
   }
 

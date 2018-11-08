@@ -108,4 +108,30 @@ describe('AccountComponent', () => {
   it('sholuld check if the displayed Columns are valid', () => {
     expect(component.displayedColumns).toEqual(['position', 'share', 'value', 'totalNumShares', 'uninsured', 'pending', 'insured', 'insure', 'cancel', 'costs']);
   });
+
+  it('sholuld disable the number to  insure fields', () => {
+    expect(component.insureDisable).toBeTruthy();
+  });
+
+  it('sholuld disable the number to cancel fields', () => {
+    expect(component.cancelDisable).toBeTruthy();
+  });
+  it('sholuld check if numberToCancelError() will return true or false', () => {
+    expect(component.numberToCancelError).toBeTruthy();
+  });
+  it('sholuld check if numberToInsureError() will return true or false', () => {
+    expect(component.numberToInsureError).toBeTruthy();
+  });
+
+  it('sholuld check if calculatePremium() will return true or false', () => {
+    expect(component.calculatePremium).toBeTruthy();
+  });
+
+  it('sholuld check if AddHoldingHandler() add new policy details', () => {
+    expect(component.AddHoldingHandler).toBeTruthy();
+  });
+
+  it('sholuld check if findHolding() exist or is new', () => {
+    expect(component.findHolding).toBeTruthy();
+  });
 });

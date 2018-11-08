@@ -45,7 +45,7 @@ export class PolicyService {
 
   async savePolicyMovements( _policyDetail: PolicyDetail): Promise<any> {
     console.log('Save Data');
-    console.log(_policyDetail);
+    console.log(JSON.stringify(_policyDetail));
 
     for (let index = 0; index < _policyDetail.holdings.length; index++) {
       console.log('Movement Type: ', _policyDetail.holdings[index].MovementType);

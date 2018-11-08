@@ -15,7 +15,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatToolbarModule} from '@angular/material/toolbar';
-
+import { JwtModule } from '@auth0/angular-jwt';
 
 
 import { AppComponent } from './app.component';
@@ -34,8 +34,12 @@ import { MasterPageComponent } from './layer/master/masterPage.component';
 import { TermsAndConditionsComponent } from './layer/terms_and_conditions/terms_and_conditions.component';
 import { from } from 'rxjs';
 import { APP_BASE_HREF } from '@angular/common';
+import { AuthService } from './shared/services/auth.service';
+import { AuthGuard } from './shared/services/auth.guard';
 
-
+export function tokenGetter() {
+  return localStorage.getItem('access_token');
+}
 
 
 
@@ -71,8 +75,14 @@ import { APP_BASE_HREF } from '@angular/common';
     MatPaginatorModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatToolbarModule
-
+    MatToolbarModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        whitelistedDomains: ['localhost:4000'],
+        blacklistedRoutes: ['localhost:4000/insurance/RequestId/:RequestId/:Broker']
+      }
+    })
   ],
   exports: [
     MatFormFieldModule
@@ -81,7 +91,12 @@ import { APP_BASE_HREF } from '@angular/common';
     DialogTanplateComponent,
     AddDialogTanplateComponent
   ],
-  providers: [ClaimService, PolicyService, StockService, {provide: APP_BASE_HREF, useValue: '/insurance/RequestId/:RequestId/:Broker'}],
+  providers: [ClaimService,
+              PolicyService,
+              StockService,
+              AuthService ,
+              AuthGuard,
+              {provide: APP_BASE_HREF, useValue: '/insurance/RequestId/:RequestId/:Broker'}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

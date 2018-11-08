@@ -112,8 +112,7 @@ export let account: Account = {
   AccountBalance: 1230,
   AccountNumber: 12345678,
   TradingPlatformId: 7676767,
-  TradingPlatformName: 'easyeqity',
-  Holdings: holding
+  TradingPlatformName: 'easyeqity'
 };
 
 export let investor: Investor = {
@@ -126,7 +125,7 @@ export let investor: Investor = {
 };
 
 export let policy: Policy = {
-  AnniversaryDate: '2010/may 01',
+  AnniversaryDate: '2010-May-01',
   PolicyNumber: '12344',
   RenewalAmount: 800,
   IsAutoRenewal: true,

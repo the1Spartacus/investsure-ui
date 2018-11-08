@@ -5,6 +5,4 @@ export interface Account {
   AccountNumber: number;
   TradingPlatformId: number;
   TradingPlatformName: string;
-  Holdings: Holding[];
-
 }
