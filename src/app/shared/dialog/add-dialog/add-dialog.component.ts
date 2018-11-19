@@ -38,8 +38,11 @@ export class AddDialogTanplateComponent implements OnInit {
     numberOfShares: 0;
     Stocks: Stock[];
     closeValue = true;
+    StockExchangeCode = 'JSE';
+    TradingPlatformName = sessionStorage.getItem('broker');
+
     constructor(private stockService: StockService) {
-        this.Stocks = this.stockService.getStocks();
+        this.Stocks = <any>this.stockService.getStocks(this.StockExchangeCode , this.TradingPlatformName);
     }
 
     ngOnInit(): void {

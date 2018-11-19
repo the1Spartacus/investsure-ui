@@ -1,17 +1,34 @@
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
-
+import { AccountService } from '../../shared/services/account.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router) { }
+  isValidRequest:  boolean;
+  constructor(private router: Router,
+              private accountService: AccountService,
+              private activatedRoute: ActivatedRoute ) {
+
+                this.activatedRoute.params.subscribe(val => {
+                  this.accountService.AuthenticateRequest(val.RequestId, val.Broker)
+                  .subscribe( data => {
+                      console.log(' verify account ', data);
+                      this.isValidRequest = data.Data.IsValidRequest;
+                      sessionStorage.setItem('req_token', data.Data.RequestToken);
+                  },
+                   error => {
+                    console.log(' verify account error', error);
+                   });
+                });
+              }
+
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (localStorage.getItem('access_token')) {
+    if (this.isValidRequest === false) {
       return true;
+    } else {
+        this.router.navigate(['**']);
+        return false;
     }
-
-    this.router.navigate(['account/RequestId/ABCD123/ShareNet']);
-    return false;
   }
 }

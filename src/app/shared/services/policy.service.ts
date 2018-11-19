@@ -2,40 +2,32 @@ import { holding, policyDetail, policy } from '../mockData/mockHolding';
 import { Holding } from '../models/holding.model';
 import { PolicyDetail } from '../models/policyDetail.model';
 import { Stock } from '../models/stock.model';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+
+@Injectable()
 export class PolicyService {
 
-  constructor() { }
+  constructor( private http: HttpClient) { }
 
-  getHolding(): Holding[] {
-    return holding;
-  }
-  getPolicyDetails(): PolicyDetail {
+  // getHolding(): Holding[] {
+  //   return holding;
+  // }
+  getPolicyDetails(RequestId: string, TradingPlatform: string) {
     console.log('Getting Policy Detail');
 
-    for (let index = 0; index < policyDetail.holdings.length; index++) {
-        if (policyDetail.holdings[index].MovementType === 'BUY') {
-            policyDetail.holdings[index].PendingShares += policyDetail.holdings[index].NumberOfSharesToInsure;
-            policyDetail.holdings[index].UninsuredShares -= policyDetail.holdings[index].NumberOfSharesToInsure;
-            policyDetail.holdings[index].Premium = 0;
-        }
 
-        if (policyDetail.holdings[index].MovementType === 'CANCEL') {
-            policyDetail.holdings[index].InsuredShares -= policyDetail.holdings[index].NumberOfSharesToCancel;
-            policyDetail.holdings[index].UninsuredShares += policyDetail.holdings[index].NumberOfSharesToCancel;
-        }
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+        'Authorization': sessionStorage.getItem('req_token')
+      })
+    };
 
-        policyDetail.holdings[index].NumberOfSharesToCancel = 0;
-        policyDetail.holdings[index].NumberOfSharesToInsure = 0;
-        policyDetail.holdings[index].MovementType = '';
-        policyDetail.holdings[index].Value = policyDetail.holdings[index].StockPrice * policyDetail.holdings[index].NumberOfShares;
+    return this.http.get<any>('https://dev-platform.investsure.info/dev/policy/platform/' + TradingPlatform + '/request/' + RequestId, httpOptions );
 
-      // this.policyDetail.holdings[index].
-    }
-
-    policyDetail.PolicyExist = true;
-
-    return policyDetail;
   }
 
   DoesPolicyExist(): boolean {
@@ -47,10 +39,10 @@ export class PolicyService {
     console.log('Save Data');
     console.log(JSON.stringify(_policyDetail));
 
-    for (let index = 0; index < _policyDetail.holdings.length; index++) {
-      console.log('Movement Type: ', _policyDetail.holdings[index].MovementType);
-      console.log('Number To Cancel: ', _policyDetail.holdings[index].NumberOfSharesToCancel);
-      console.log('Number To Insure: ', _policyDetail.holdings[index].NumberOfSharesToInsure);
+    for (let index = 0; index < _policyDetail.Holdings.length; index++) {
+      console.log('Movement Type: ', _policyDetail.Holdings[index].MovementType);
+      console.log('Number To Cancel: ', _policyDetail.Holdings[index].NumberOfSharesToCancel);
+      console.log('Number To Insure: ', _policyDetail.Holdings[index].NumberOfSharesToInsure);
     }
 
     const promise = await new Promise((resolve, reject) => {
@@ -59,6 +51,20 @@ export class PolicyService {
 
     return '200';
   }
+
+  // submit(TradingPlatform: string) {
+
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       'Access-Control-Allow-Origin': '*',
+  //       'Content-Type': 'application/json',
+  //       'Authorization': sessionStorage.getItem('req_token')
+  //     })
+  //   };
+
+  //   this.http.post('https://dev-platform.investsure.info/dev/insurance/' + TradingPlatform, httpOptions);
+  //   this.http.post('https://dev-platform.investsure.info/dev/insurance/' + TradingPlatform + '/process', httpOptions);
+  // }
 
 }
 

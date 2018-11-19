@@ -4,9 +4,12 @@ import { Holding } from '../../shared/models/holding.model';
 import {MatTableDataSource, MatPaginator} from '@angular/material';
 import { PolicyService } from '../../shared/services/policy.service';
 import { PolicyDetail } from '../../shared/models/policyDetail.model';
-import { HoldingCache } from 'src/app/shared/models/holding.cache';
 import { isNullOrUndefined } from 'util';
 import { policyDetail } from '../../shared/mockData/mockHolding';
+import { AuthenticationService } from '../../shared/services/auth.service';
+import { HoldingCache } from '../../shared/models/holding.cache';
+import { PolicyCache } from '../../shared/policy.cache';
+
 
 
 @Component({
@@ -28,32 +31,43 @@ export class AccountComponent implements OnInit {
   Counter = 0;
   PolicyAgreed: boolean;
   resp: string;
+  RequestId: string;
+  Broker: string;
+
   // isPolicyAgreed: boolean;
 // constractor
-  constructor(private activatedRoute: ActivatedRoute, private policyService: PolicyService ) {
-    let RequestId: string;
-
-   // activatedRoute.params.subscribe(val => {
+  constructor(private activatedRoute: ActivatedRoute, private policyService: PolicyService, private router: Router ) {
+    activatedRoute.params.subscribe(val => {
       console.log('acctive route');
-      // put the code from `ngOnInit` here
-     // console.log(val.RequestId);
-      this.policydetail = this.policyService.getPolicyDetails();
-      this.PolicyAgreed = this.policydetail.PolicyExist;
-      this.policyDetailData = new MatTableDataSource<Holding>(this.policydetail.holdings);
-      this.HoldingsCount = this.policydetail.holdings.length;
-   // });
+
+      //  this.AuthService.AuthenticateRequest(val.RequestId);
+      this.RequestId = val.RequestId;
+      this.Broker = val.Broker;
+      sessionStorage.setItem('broker', this.Broker);
+       console.log(val.RequestId);
+    });
+
+    // if (!this.AuthService.isAuthenticated()) {
+    //   this.router.navigate(['**']);
+    // }
+
+    this.policydetail = <PolicyDetail>PolicyCache.getItem(this.RequestId);  // this.policyService.getPolicyDetails();
+    console.log('policy details ', this.policydetail);
+    this.PolicyAgreed = this.policydetail.PolicyExist;
+    this.policyDetailData = new MatTableDataSource<Holding>(this.policydetail.Holdings);
+    this.HoldingsCount = this.policydetail.Holdings.length;
 
     console.log('constructor');
     this.displayedColumns = ['position', 'share', 'value', 'totalNumShares', 'uninsured', 'pending', 'insured', 'insure', 'cancel', 'costs'];
 
     sessionStorage.clear();
 
-    RequestId = this.activatedRoute.snapshot.params['RequestId'];
-    const TradingPlatform = this.activatedRoute.snapshot.params['Broker'];
+    // RequestId = this.activatedRoute.snapshot.params['RequestId'];
+    // const TradingPlatform = this.activatedRoute.snapshot.params['Broker'];
 
     const sessionRequestId: string = sessionStorage.getItem('RequestId');
     if (sessionRequestId === null || sessionRequestId === undefined) {
-      sessionStorage.setItem('RequestId', RequestId);
+      sessionStorage.setItem('RequestId', this.RequestId);
     }
   }
 
@@ -75,11 +89,20 @@ export class AccountComponent implements OnInit {
 
       if (this.resp === '200') {
         // this.router.navigate(['insurance/RequestId/ABCD123/ShareNet']);
-        this.policydetail = this.policyService.getPolicyDetails();
-        this.policyDetailData = new MatTableDataSource<Holding>(this.policydetail.holdings);
+        PolicyCache.removeItem(this.RequestId);
+
+        this.policyService.getPolicyDetails(this.RequestId, this.Broker).
+        subscribe(policydetail => {
+          this.policydetail = policydetail;
+        });
+         if (!isNullOrUndefined(this.policydetail)) {
+            PolicyCache.addItem({ RequestId: this.RequestId, DataItem: this.policydetail });
+         }
+
+        this.policyDetailData = new MatTableDataSource<Holding>(this.policydetail.Holdings);
        }
       this.policyDetailData.paginator = this.paginator;
-      console.log('auto renewal ' + this.policydetail.policy.IsAutoRenewal);
+      console.log('auto renewal ' + this.policydetail.Policy.IsAutoRenewal);
       console.log('total is: ' + this.Total);
       this.Total = 0;
   }
@@ -163,9 +186,9 @@ export class AccountComponent implements OnInit {
 
     if (index > -1) {
       console.log('Holding Exist');
-      this.policydetail.holdings[index].NumberOfShares += +newHolding.NumberOfShares;
-      this.policydetail.holdings[index].UninsuredShares += +newHolding.NumberOfShares;
-      this.policydetail.holdings[index].Value += +newHolding.NumberOfShares * newHolding.StockPrice;
+      this.policydetail.Holdings[index].NumberOfShares += +newHolding.NumberOfShares;
+      this.policydetail.Holdings[index].UninsuredShares += +newHolding.NumberOfShares;
+      this.policydetail.Holdings[index].Value += +newHolding.NumberOfShares * newHolding.StockPrice;
     } else {
 
       console.log('Holding Does Not Exist');
@@ -180,7 +203,7 @@ export class AccountComponent implements OnInit {
       newHolding.Value = newHolding.NumberOfShares * newHolding.StockPrice;
       this.policyDetailData.data.push(newHolding);
       this.policyDetailData = new MatTableDataSource<Holding>(this.policyDetailData.data);
-      this.HoldingsCount = this.policydetail.holdings.length;
+      this.HoldingsCount = this.policydetail.Holdings.length;
     }
     console.log(this.policyDetailData.data);
     this.policyDetailData.paginator = this.paginator;
@@ -188,9 +211,9 @@ export class AccountComponent implements OnInit {
 
 
   findHolding(_holding: Holding) {
-    for (let index = 0; index < this.policydetail.holdings.length; index++) {
-      if (this.policydetail.holdings[index].ISINCode === _holding.ISINCode &&
-          this.policydetail.holdings[index].IsNewHolding === _holding.IsNewHolding) {
+    for (let index = 0; index < this.policydetail.Holdings.length; index++) {
+      if (this.policydetail.Holdings[index].ISINCode === _holding.ISINCode &&
+          this.policydetail.Holdings[index].IsNewHolding === _holding.IsNewHolding) {
         return index;
       }
     }

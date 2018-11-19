@@ -6,11 +6,11 @@
   <div class="client-info">
     <mat-list>
       <mat-list-item>
-          <p mat-line><strong>Name:</strong> {{policydetail.investor.Name}}</p>
-          <p mat-line><strong>ID number:</strong> {{policydetail.investor.IdNumber}}</p>
-          <p mat-line><strong>E-mail:</strong> {{policydetail.investor.Email}}</p>
-          <p mat-line><strong>Trading Platform:</strong> {{policydetail.account.TradingPlatformName}}</p>
-          <p mat-line><strong>Policy Number:</strong> {{policydetail.policy.PolicyNumber}}</p>
+          <p mat-line><strong>Name:</strong> {{policydetail.Investor.Name}}</p>
+          <p mat-line><strong>ID number:</strong> {{policydetail.Investor.IdNumber}}</p>
+          <p mat-line><strong>E-mail:</strong> {{policydetail.Investor.Email}}</p>
+          <p mat-line><strong>Trading Platform:</strong> {{policydetail.Account.TradingPlatformName}}</p>
+          <p mat-line><strong>Policy Number:</strong> {{policydetail.Policy.PolicyNumber}}</p>
       </mat-list-item>
       </mat-list>
   </div>
@@ -18,11 +18,11 @@
     <mat-list>
         <mat-list-item>
             <p mat-line><strong>Auto-renew insurance: </strong>
-              <mat-slide-toggle  [(ngModel)]="policydetail.policy.IsAutoRenewal">ON</mat-slide-toggle>
+              <mat-slide-toggle  [(ngModel)]="policydetail.Policy.IsAutoRenewal">ON</mat-slide-toggle>
             </p>
-            <p mat-line><strong>Estimated  renewal cost:</strong> {{policydetail.policy.RenewalAmount}} </p>
-            <p mat-line><strong>Available funds:</strong> {{policydetail.account.AccountBalance}}</p>
-            <p mat-line><strong>Anniversary Date:</strong> {{policydetail.policy.AnniversaryDate}}</p>
+            <p mat-line><strong>Estimated  renewal cost:</strong> {{policydetail.Policy.RenewalAmount}} </p>
+            <p mat-line><strong>Available funds:</strong> {{policydetail.Account.AccountBalance}}</p>
+            <p mat-line><strong>Anniversary Date:</strong> {{policydetail.Policy.AnniversaryDate}}</p>
         </mat-list-item>
         </mat-list>
   </div>

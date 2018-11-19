@@ -4,24 +4,24 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable()
-export  class AuthService {
+export  class AuthenticationService {
   constructor(private http: HttpClient) { }
 
-    login(username: string, password: string): Observable<boolean> {
-    return this.http.post<{token: string}>('localhost:4000/insurance/RequestId/:RequestId/:Broker', {username: username, password: password})
+    AuthenticateRequest(RequestId: string): Observable<boolean> {
+    return this.http.post<{token: string}>('/api/auth', {RequestId: RequestId})
       .pipe(
         map(result => {
-          localStorage.setItem('access_token', result.token);
+          sessionStorage.setItem('access_token', result.token);
           return true;
         })
       );
   }
 
-  logout() {
-    localStorage.removeItem('access_token');
+  terminateSession() {
+    sessionStorage.removeItem('access_token');
   }
 
-  public get loggedIn(): boolean {
-    return (localStorage.getItem('access_token') !== null);
+  isAuthenticated(): boolean {
+    return (sessionStorage.getItem('access_token') !== null);
   }
 }

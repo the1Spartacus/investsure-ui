@@ -16,7 +16,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { JwtModule } from '@auth0/angular-jwt';
-
+import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { AccountComponent } from './layer/account_holding/account.component';
@@ -34,8 +35,10 @@ import { MasterPageComponent } from './layer/master/masterPage.component';
 import { TermsAndConditionsComponent } from './layer/terms_and_conditions/terms_and_conditions.component';
 import { from } from 'rxjs';
 import { APP_BASE_HREF } from '@angular/common';
-import { AuthService } from './shared/services/auth.service';
+import { AuthenticationService } from './shared/services/auth.service';
 import { AuthGuard } from './shared/services/auth.guard';
+import { AccountService } from './shared/services/account.service';
+import { UnauthorizedComponent } from './shared/unauthorized/unauthorized.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -55,7 +58,8 @@ export function tokenGetter() {
     AddDialogTanplateComponent,
     AddDialogComponent,
     MasterPageComponent,
-    TermsAndConditionsComponent
+    TermsAndConditionsComponent,
+    UnauthorizedComponent
 
   ],
   imports: [
@@ -76,13 +80,8 @@ export function tokenGetter() {
     MatFormFieldModule,
     MatSelectModule,
     MatToolbarModule,
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: tokenGetter,
-        whitelistedDomains: ['localhost:4000'],
-        blacklistedRoutes: ['localhost:4000/insurance/RequestId/:RequestId/:Broker']
-      }
-    })
+    HttpModule,
+    HttpClientModule
   ],
   exports: [
     MatFormFieldModule
@@ -94,9 +93,10 @@ export function tokenGetter() {
   providers: [ClaimService,
               PolicyService,
               StockService,
-              AuthService ,
+              AuthenticationService ,
               AuthGuard,
-              {provide: APP_BASE_HREF, useValue: '/insurance/RequestId/:RequestId/:Broker'}],
+              AccountService
+            ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

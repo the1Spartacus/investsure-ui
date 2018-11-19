@@ -90,15 +90,15 @@ describe('AccountComponent', () => {
   });
 
   it('should get policy details.invester', () => {
-    expect(component.policydetail.investor).not.toBeNull();
+    expect(component.policydetail.Investor).not.toBeNull();
   });
 
   it('should get policy details.Acccount', () => {
-    expect(component.policydetail.account).not.toBeNull();
+    expect(component.policydetail.Account).not.toBeNull();
   });
 
   it('should get policy details.Holdings', () => {
-    expect(component.policydetail.holdings.length).toBeGreaterThan(0);
+    expect(component.policydetail.Holdings.length).toBeGreaterThan(0);
   });
 
   it('sholuld check if the policy is agreed or not', () => {

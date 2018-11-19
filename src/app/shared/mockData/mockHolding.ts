@@ -131,9 +131,9 @@ export let policy: Policy = {
   IsAutoRenewal: true,
 };
 export let policyDetail: PolicyDetail = {
-  account: account,
-  holdings: holding,
-  investor: investor,
-  policy: policy,
+  Account: account,
+  Holdings: holding,
+  Investor: investor,
+  Policy: policy,
   PolicyExist: false
 };
