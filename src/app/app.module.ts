@@ -18,6 +18,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import { JwtModule } from '@auth0/angular-jwt';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import { AppComponent } from './app.component';
 import { AccountComponent } from './layer/account_holding/account.component';
@@ -81,7 +82,8 @@ export function tokenGetter() {
     MatSelectModule,
     MatToolbarModule,
     HttpModule,
-    HttpClientModule
+    HttpClientModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     MatFormFieldModule

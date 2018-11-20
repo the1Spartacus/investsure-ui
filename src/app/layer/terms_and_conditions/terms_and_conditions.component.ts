@@ -40,7 +40,7 @@ export class TermsAndConditionsComponent {
             sessionStorage.setItem('req_token', data.Data.RequestToken);
             this.policyService.getPolicyDetails(val.RequestId, val.Broker)
             .subscribe(policyResponse => {
-              // console.log(' policy details ', policyDetails);
+              console.log(' policy details ', policyResponse);
               PolicyCache.addItem({RequestId: val.RequestId, DataItem: policyResponse.Data});
             });
           } else {

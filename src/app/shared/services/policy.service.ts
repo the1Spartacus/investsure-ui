@@ -1,9 +1,9 @@
-import { holding, policyDetail, policy } from '../mockData/mockHolding';
 import { Holding } from '../models/holding.model';
 import { PolicyDetail } from '../models/policyDetail.model';
 import { Stock } from '../models/stock.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ServiceResponse } from '../models/accountReqResponse';
 
 
 @Injectable()
@@ -26,7 +26,7 @@ export class PolicyService {
       })
     };
 
-    return this.http.get<any>('https://dev-platform.investsure.info/dev/policy/platform/' + TradingPlatform + '/request/' + RequestId, httpOptions );
+    return this.http.get<ServiceResponse>('https://dev-platform.investsure.info/dev/policy/platform/' + TradingPlatform + '/request/' + RequestId, httpOptions );
 
   }
 
@@ -52,19 +52,22 @@ export class PolicyService {
     return '200';
   }
 
-  // submit(TradingPlatform: string) {
+  submit(TradingPlatform: string, policyDetail: PolicyDetail) {
 
-  //   const httpOptions = {
-  //     headers: new HttpHeaders({
-  //       'Access-Control-Allow-Origin': '*',
-  //       'Content-Type': 'application/json',
-  //       'Authorization': sessionStorage.getItem('req_token')
-  //     })
-  //   };
+    const token = sessionStorage.getItem('req_token');
+    console.log('token ', token );
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+        'Authorization': token
+      })
+    };
 
-  //   this.http.post('https://dev-platform.investsure.info/dev/insurance/' + TradingPlatform, httpOptions);
-  //   this.http.post('https://dev-platform.investsure.info/dev/insurance/' + TradingPlatform + '/process', httpOptions);
-  // }
+    // this.http.post('https://dev-platform.investsure.info/dev/insurance/' + TradingPlatform, httpOptions);
+    console.log(JSON.stringify(policyDetail));
+    return this.http.post<ServiceResponse>('https://dev-platform.investsure.info/dev/insurance/' + TradingPlatform + '/process', policyDetail, httpOptions);
+  }
 
 }
 

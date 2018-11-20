@@ -1,6 +1,6 @@
-export interface AccountReqResponse {
+export interface ServiceResponse {
   Code: number;
-  Data: { IsValidRequest: boolean, RequestToken: string };
+  Data: any;
   Id: string;
   Message: string;
 }

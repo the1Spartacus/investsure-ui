@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AccountReqResponse } from '../models/accountReqResponse';
+import { ServiceResponse } from '../models/accountReqResponse';
 
 @Injectable()
 export class AccountService {
@@ -8,7 +8,7 @@ export class AccountService {
 
   // Verify Account Request (Authenticate Request)
   AuthenticateRequest(RequestId: string, TradingPlatform: string) {
-  return  this.http.get<AccountReqResponse>('https://dev-platform.investsure.info/dev/account/request/' + RequestId + '/platform/' + TradingPlatform + '/verify');
+  return  this.http.get<ServiceResponse>('https://dev-platform.investsure.info/dev/account/request/' + RequestId + '/platform/' + TradingPlatform + '/verify');
   }
 
 }

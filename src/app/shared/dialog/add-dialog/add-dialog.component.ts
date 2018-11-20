@@ -42,7 +42,13 @@ export class AddDialogTanplateComponent implements OnInit {
     TradingPlatformName = sessionStorage.getItem('broker');
 
     constructor(private stockService: StockService) {
-        this.Stocks = <any>this.stockService.getStocks(this.StockExchangeCode , this.TradingPlatformName);
+        this.stockService.getStocks(this.StockExchangeCode , this.TradingPlatformName).subscribe(stockResponse => {
+          this.Stocks = stockResponse.Data;
+          console.log('strock reponse ', this.Stocks);
+        },
+        error => {
+          console.log('stock error ', error);
+        });
     }
 
     ngOnInit(): void {

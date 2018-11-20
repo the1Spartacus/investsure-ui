@@ -2,6 +2,7 @@ import { stocks } from '../mockData/mockHolding';
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Stock } from '../models/stock.model';
+import { ServiceResponse } from '../models/accountReqResponse';
 
 @Injectable()
 export class StockService {
@@ -10,7 +11,7 @@ export class StockService {
     //   return stocks;
     // }
 
-    getStocks(StockExchangeCode: string, TradingPlatformName: string) {
+    getStocks(StockExchange: string, TradingPlatform: string) {
       const httpOptions = {
         headers: new HttpHeaders({
           'Access-Control-Allow-Origin': '*',
@@ -18,6 +19,8 @@ export class StockService {
           'Authorization': sessionStorage.getItem('req_token')
         })
       };
-      return this.http.get<any>('https://dev-admin.investsure.info/dev/stocks/exchange/' + StockExchangeCode + '/platform/' + TradingPlatformName, httpOptions);
+
+      return this.http.get<ServiceResponse>('https://dev-admin.investsure.info/dev/stocks/market/' + StockExchange + '/platform/' + TradingPlatform, httpOptions);
+      // return this.http.get<any>('https://dev-admin.investsure.info/dev/stocks/exchange/' + StockExchangeCode + '/platform/' + TradingPlatformName, httpOptions);
     }
 }

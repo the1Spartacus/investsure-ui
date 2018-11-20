@@ -60,7 +60,7 @@ export class AccountComponent implements OnInit {
     console.log('constructor');
     this.displayedColumns = ['position', 'share', 'value', 'totalNumShares', 'uninsured', 'pending', 'insured', 'insure', 'cancel', 'costs'];
 
-    sessionStorage.clear();
+    // sessionStorage.clear();
 
     // RequestId = this.activatedRoute.snapshot.params['RequestId'];
     // const TradingPlatform = this.activatedRoute.snapshot.params['Broker'];
@@ -85,26 +85,35 @@ export class AccountComponent implements OnInit {
   // functions
   // submit button function
   async submit() {
-       this.resp = await this.policyService.savePolicyMovements(this.policydetail);
+        this.policyService.submit(this.Broker, this.policydetail)
+        .subscribe( submitResponse => {
+          console.log('submit response ', submitResponse);
 
-      if (this.resp === '200') {
-        // this.router.navigate(['insurance/RequestId/ABCD123/ShareNet']);
-        PolicyCache.removeItem(this.RequestId);
-
-        this.policyService.getPolicyDetails(this.RequestId, this.Broker).
-        subscribe(policydetail => {
-          this.policydetail = policydetail;
+        },
+        error => {
+          console.log('submit error ', error);
         });
-         if (!isNullOrUndefined(this.policydetail)) {
-            PolicyCache.addItem({ RequestId: this.RequestId, DataItem: this.policydetail });
-         }
 
-        this.policyDetailData = new MatTableDataSource<Holding>(this.policydetail.Holdings);
-       }
-      this.policyDetailData.paginator = this.paginator;
-      console.log('auto renewal ' + this.policydetail.Policy.IsAutoRenewal);
-      console.log('total is: ' + this.Total);
-      this.Total = 0;
+      //  this.resp = await this.policyService.savePolicyMovements(this.policydetail);
+
+      // if (this.resp === '200') {
+      //   // this.router.navigate(['insurance/RequestId/ABCD123/ShareNet']);
+      //   PolicyCache.removeItem(this.RequestId);
+
+      //   this.policyService.getPolicyDetails(this.RequestId, this.Broker).
+      //   subscribe(policydetail => {
+      //     this.policydetail = policydetail.Data;
+      //   });
+      //    if (!isNullOrUndefined(this.policydetail)) {
+      //       PolicyCache.addItem({ RequestId: this.RequestId, DataItem: this.policydetail });
+      //    }
+
+      //   this.policyDetailData = new MatTableDataSource<Holding>(this.policydetail.Holdings);
+      //  }
+      // this.policyDetailData.paginator = this.paginator;
+      // console.log('auto renewal ' + this.policydetail.Policy.IsAutoRenewal);
+      // console.log('total is: ' + this.Total);
+      // this.Total = 0;
   }
   // oln change function
   onChangeValidation(row) {
