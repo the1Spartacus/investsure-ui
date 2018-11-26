@@ -15,25 +15,30 @@ mat-card{
 .container div {
   display: inline-block;
 }
-table {
+mat-table {
   width: 100%;
 }
 input{
-  width: 100px;
-  height: 23px;
+  width: 70px;
+  height: auto;
   border-radius: 100px;
   text-align: center;
+}
+mat-form-field{
+  width: 80px;
+  height: auto;
   border-color: #286491;
 }
 
-
-th {
+mat-header-cell {
   background-color:#F5F6FA;
   font-size: 11px;
   text-align: center;
 }
-td {
+
+mat-cell {
   font-size: 11px;
+
 }
 
 .container_submit {
@@ -71,3 +76,4 @@ mat-label{
   margin-bottom: -5%;
   margin-top: -5%;
 }
+

@@ -5,15 +5,15 @@ mat-card{
   margin-bottom: 0.5%;
   padding-bottom:1%;
 }
-table {
+mat-table {
   width: 100%;
 }
-th {
+mat-header-cell {
   background-color:#F5F6FA;
   font-size: 11px;
   text-align: center;
 }
-td {
+mat-cell {
   font-size: 11px;
 }
 .mat-form-field {

@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit  } from '@angular/core';
 import { ActivatedRoute, Router} from '@angular/router';
 import { Holding } from '../../shared/models/holding.model';
-import {MatTableDataSource, MatPaginator} from '@angular/material';
+import {MatTableDataSource, MatPaginator, MatDialog} from '@angular/material';
 import { PolicyService } from '../../shared/services/policy.service';
 import { PolicyDetail } from '../../shared/models/policyDetail.model';
 import { isNullOrUndefined } from 'util';
@@ -9,6 +9,8 @@ import { policyDetail } from '../../shared/mockData/mockHolding';
 import { AuthenticationService } from '../../shared/services/auth.service';
 import { HoldingCache } from '../../shared/models/holding.cache';
 import { PolicyCache } from '../../shared/policy.cache';
+
+
 
 
 
@@ -36,7 +38,10 @@ export class AccountComponent implements OnInit {
 
   // isPolicyAgreed: boolean;
 // constractor
-  constructor(private activatedRoute: ActivatedRoute, private policyService: PolicyService, private router: Router ) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private policyService: PolicyService,
+              private router: Router,
+              public dialog: MatDialog ) {
     activatedRoute.params.subscribe(val => {
       console.log('acctive route');
 
@@ -85,14 +90,20 @@ export class AccountComponent implements OnInit {
   // functions
   // submit button function
   async submit() {
-        this.policyService.submit(this.Broker, this.policydetail)
-        .subscribe( submitResponse => {
-          console.log('submit response ', submitResponse);
+    const dialogRef = this.dialog.open(ConfirmSubmitComponent);
 
-        },
-        error => {
-          console.log('submit error ', error);
-        });
+    dialogRef.afterClosed().subscribe(result => {
+        if (result === true) {
+          this.policyService.submit(this.Broker, this.policydetail)
+          .subscribe( submitResponse => {
+            console.log('submit response ', submitResponse);
+          },
+          error => {
+            console.log('submit error ', error);
+          });
+        } else { return; }
+    });
+
 
       //  this.resp = await this.policyService.savePolicyMovements(this.policydetail);
 
@@ -142,7 +153,7 @@ export class AccountComponent implements OnInit {
     }
   }
 
-  numberToInsureError(row) {
+   numberToInsureError(row) {
     const holdings = <Holding>row;
     if ( holdings.NumberOfSharesToInsure > holdings.UninsuredShares) {
       this.errorMessage = 'error you can not insure more than your uninsured share';
@@ -233,3 +244,12 @@ export class AccountComponent implements OnInit {
     this.PolicyAgreed = $event;
   }
 }
+
+@Component ({
+  selector: 'app-confirm-submit',
+  templateUrl: './confirmSubmit.component.html'
+})
+
+export class ConfirmSubmitComponent {
+}
+

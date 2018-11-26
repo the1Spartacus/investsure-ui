@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import { PolicyService } from '../../services/policy.service';
-import { isNullOrUndefined } from 'util';
+import { PolicyWordingService } from '../../services/policyWording.service';
 
 /**
  * @title Dialog with header, scrollable content and actions
@@ -12,7 +12,8 @@ import { isNullOrUndefined } from 'util';
   styleUrls: ['./dailog.component.css']
 })
 export class DialogComponent {
-  constructor(public dialog: MatDialog, private policyService: PolicyService) {}
+  constructor(public dialog: MatDialog,
+              private policyService: PolicyService) {}
 
   @Output() agree: EventEmitter <boolean> = new EventEmitter<boolean>();
 
@@ -31,4 +32,7 @@ export class DialogComponent {
   selector: 'app-dialog-tamplate',
   templateUrl: 'dialogTamplate.component.html',
 })
-export class DialogTanplateComponent {}
+export class DialogTanplateComponent {
+  constructor(private policyWordingService: PolicyWordingService) {}
+  pdfSrc = this.policyWordingService.getPolicyWording(sessionStorage.getItem('broker'));
+}

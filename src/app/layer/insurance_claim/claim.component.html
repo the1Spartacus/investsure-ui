@@ -5,73 +5,70 @@
         <mat-form-field>
           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
         </mat-form-field>
-      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
-          <!--- Note that these columns can be defined in any order.
-                The actual rendered columns are set as a property on the row definition" -->
+      <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
           <!-- Share Column -->
           <ng-container matColumnDef="ISINCode">
-            <th mat-header-cell *matHeaderCellDef> # </th>
-            <td mat-cell *matCellDef="let element"> {{element.ISINCode}} </td>
+            <mat-header-cell *matHeaderCellDef> # </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.ISINCode}} </mat-cell>
           </ng-container>
 
             <!-- Share Column -->
             <ng-container matColumnDef="StockName">
-              <th mat-header-cell *matHeaderCellDef> SHARE </th>
-              <td mat-cell *matCellDef="let element"> {{element.StockName}} </td>
+              <mat-header-cell *matHeaderCellDef> SHARE </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.StockName}} </mat-cell>
             </ng-container>
 
           <!-- Value Column -->
           <ng-container matColumnDef="FraudInTheNews">
-            <th mat-header-cell *matHeaderCellDef> FRAUD IN THE<br> NEWS </th>
-            <td mat-cell *matCellDef="let element"> {{element.FraudInTheNews}} </td>
+            <mat-header-cell *matHeaderCellDef> FRAUD IN THE<br> NEWS </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.FraudInTheNews}} </mat-cell>
           </ng-container>
 
           <!-- Total number of shares Column -->
           <ng-container matColumnDef="ClaimTriggered">
-            <th mat-header-cell *matHeaderCellDef> CLAIM <br>TRIGGERED</th>
-            <td mat-cell *matCellDef="let element"> {{element.ClaimTriggered}}</td>
+            <mat-header-cell *matHeaderCellDef> CLAIM <br>TRIGGERED</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.ClaimTriggered}}</mat-cell>
           </ng-container>
 
           <!-- Uninsured Column -->
           <ng-container matColumnDef="TriggeredDate">
-            <th mat-header-cell *matHeaderCellDef> TRIGGERED <br>DATE </th>
-            <td mat-cell *matCellDef="let element"> {{element.TriggeredDate}} </td>
+            <mat-header-cell *matHeaderCellDef> TRIGGERED <br>DATE </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.TriggeredDate}} </mat-cell>
           </ng-container>
 
           <!-- Panding insure Column -->
           <ng-container matColumnDef="TotalClaimableShares">
-              <th mat-header-cell *matHeaderCellDef> CLAIMABLE <br>SHARES </th>
-              <td mat-cell *matCellDef="let element"> {{element.TotalClaimableShares}} </td>
+              <mat-header-cell *matHeaderCellDef> CLAIMABLE <br>SHARES </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.TotalClaimableShares}} </mat-cell>
             </ng-container>
 
             <!-- Insured Column -->
           <ng-container matColumnDef="TriggerPrice">
-              <th mat-header-cell *matHeaderCellDef> TRIGGER<br> PRICE </th>
-              <td mat-cell *matCellDef="let element"> {{element.TriggerPrice | currency : "R"}} </td>
+              <mat-header-cell *matHeaderCellDef> TRIGGER<br> PRICE </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.TriggerPrice | currency:'ZAR':'symbol-narrow':'0.2-2'}} </mat-cell>
             </ng-container>
 
 
           <ng-container matColumnDef="StockPrice">
-              <th mat-header-cell *matHeaderCellDef> EST.CURRENT <br>PRICE </th>
-              <td mat-cell *matCellDef="let element"> {{element.StockPrice | currency : "R"        }} </td>
+              <mat-header-cell *matHeaderCellDef> EST.CURRENT <br>PRICE </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.StockPrice | currency:'ZAR':'symbol-narrow':'0.2-2'}} </mat-cell>
             </ng-container>
 
 
           <ng-container matColumnDef="ClaimPerShare">
-              <th mat-header-cell *matHeaderCellDef> CLAIM PER<br> SHARE </th>
-              <td mat-cell *matCellDef="let element"> {{element.ClaimPerShare | currency : "R" }} </td>
+              <mat-header-cell *matHeaderCellDef> CLAIM PER<br> SHARE </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.ClaimPerShare | currency:'ZAR':'symbol-narrow':'0.2-2' }} </mat-cell>
             </ng-container>
 
 
           <ng-container matColumnDef="ClaimAmount">
-              <th mat-header-cell *matHeaderCellDef> EST.CLAIM<br> VALUE </th>
-              <td mat-cell *matCellDef="let element"> {{element.ClaimAmount | currency : "R"}} </td>
+              <mat-header-cell *matHeaderCellDef> EST.CLAIM<br> VALUE </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.ClaimAmount | currency:'ZAR':'symbol-narrow':'0.2-2'}} </mat-cell>
             </ng-container>
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
         <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
       </div>
     </mat-card>

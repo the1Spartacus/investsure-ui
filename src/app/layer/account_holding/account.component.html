@@ -20,8 +20,8 @@
             <p mat-line><strong>Auto-renew insurance: </strong>
               <mat-slide-toggle  [(ngModel)]="policydetail.Policy.IsAutoRenewal">ON</mat-slide-toggle>
             </p>
-            <p mat-line><strong>Estimated  renewal cost:</strong> {{policydetail.Policy.RenewalAmount}} </p>
-            <p mat-line><strong>Available funds:</strong> {{policydetail.Account.AccountBalance}}</p>
+            <p mat-line><strong>Estimated  renewal cost:</strong> {{policydetail.Policy.RenewalAmount | currency:'ZAR':'symbol-narrow':'0.2-2'}} </p>
+            <p mat-line><strong>Available funds:</strong> {{policydetail.Account.AccountBalance | currency:'ZAR':'symbol-narrow':'0.2-2'}}</p>
             <p mat-line><strong>Anniversary Date:</strong> {{policydetail.Policy.AnniversaryDate}}</p>
         </mat-list-item>
         </mat-list>
@@ -33,81 +33,84 @@
 
     <div class="mat-elevation-z8">
 
-    <table mat-table [dataSource]="policyDetailData" class="mat-elevation-z8">
+    <mat-table [dataSource]="policyDetailData" class="mat-elevation-z8">
 
         <!--- Note that these columns can be defined in any order.
               The actual rendered columns are set as a property on the row definition" -->
 
         <!-- Share Column -->
         <ng-container matColumnDef="position">
-          <th mat-header-cell *matHeaderCellDef> # </th>
-          <td mat-cell *matCellDef="let holding"> {{Counter+1}} </td>
+          <mat-header-cell *matHeaderCellDef> # </mat-header-cell>
+          <mat-cell *matCellDef="let holding"> {{findHolding(holding) + 1}} </mat-cell>
         </ng-container>
 
           <!-- Share Column -->
           <ng-container matColumnDef="share">
-            <th mat-header-cell *matHeaderCellDef> SHARE </th>
-            <td mat-cell *matCellDef="let holding"> {{holding.StockName}} </td>
+            <mat-header-cell *matHeaderCellDef> SHARE </mat-header-cell>
+            <mat-cell *matCellDef="let holding"> {{holding.StockName}} </mat-cell>
           </ng-container>
 
         <!-- Value Column -->
         <ng-container matColumnDef="value">
-          <th mat-header-cell *matHeaderCellDef> VALUE </th>
-          <td mat-cell *matCellDef="let holding"> {{holding.Value | currency : "R"}} </td>
+          <mat-header-cell *matHeaderCellDef> VALUE </mat-header-cell>
+          <mat-cell *matCellDef="let holding"> {{holding.Value | currency:'ZAR':'symbol-narrow':'0.2-2'}} </mat-cell>
         </ng-container>
 
         <!-- Total number of shares Column -->
         <ng-container matColumnDef="totalNumShares">
-          <th mat-header-cell *matHeaderCellDef> TOTAL NUMBER<br> OF SHARES </th>
-          <td class="totnum" mat-cell *matCellDef="let holding"> {{holding.NumberOfShares}}</td>
+          <mat-header-cell *matHeaderCellDef> TOTAL NUMBER<br> OF SHARES </mat-header-cell>
+          <mat-cell class="totnum"  *matCellDef="let holding"> {{holding.NumberOfShares}}</mat-cell>
         </ng-container>
 
         <!-- Uninsured Column -->
         <ng-container matColumnDef="uninsured">
-          <th mat-header-cell *matHeaderCellDef> UNINSURED </th>
-          <td mat-cell *matCellDef="let holding"> {{holding.UninsuredShares}} </td>
+          <mat-header-cell *matHeaderCellDef> UNINSURED </mat-header-cell>
+          <mat-cell *matCellDef="let holding"> {{holding.UninsuredShares}} </mat-cell>
         </ng-container>
 
         <!-- Panding insure Column -->
         <ng-container matColumnDef="pending">
-            <th mat-header-cell *matHeaderCellDef> PENDING <br>INSURE </th>
-            <td mat-cell *matCellDef="let holding"> {{holding.PendingShares}} </td>
+            <mat-header-cell *matHeaderCellDef> PENDING <br>INSURE </mat-header-cell>
+            <mat-cell *matCellDef="let holding"> {{holding.PendingShares}} </mat-cell>
           </ng-container>
 
           <!-- Insured Column -->
         <ng-container matColumnDef="insured">
-            <th mat-header-cell *matHeaderCellDef> INSURED </th>
-            <td mat-cell *matCellDef="let holding"> {{holding.InsuredShares}} </td>
+            <mat-header-cell *matHeaderCellDef> INSURED </mat-header-cell>
+            <mat-cell *matCellDef="let holding"> {{holding.InsuredShares}} </mat-cell>
           </ng-container>
 
           <!-- Number to  Insure Column -->
         <ng-container matColumnDef="insure">
-            <th mat-header-cell *matHeaderCellDef> NUMBER TO<br> INSURE </th>
-            <td mat-cell *matCellDef="let holding">
-              <input type="number" min="0" max="{{holding.UninsuredShares}}" [disabled]="insureDisable(holding)" matInput  [(ngModel)]="holding.NumberOfSharesToInsure" >
-              <div class="errorColor" *ngIf="numberToInsureError(holding)">{{errorMessage}}</div>
-            </td>
+            <mat-header-cell *matHeaderCellDef> NUMBER TO<br> INSURE </mat-header-cell>
+            <mat-cell *matCellDef="let holding">
+                <mat-form-field appearance="outline">
+                    <input matInput placeholder="0" [disabled]="insureDisable(holding)"   [(ngModel)]="holding.NumberOfSharesToInsure" >
+                    <div class="errorColor" *ngIf="numberToInsureError(holding)">{{errorMessage}}</div>
+                  </mat-form-field>
+            </mat-cell>
           </ng-container>
 
           <!-- Number to Cancel Column -->
         <ng-container matColumnDef="cancel">
-            <th mat-header-cell *matHeaderCellDef> NUMBER TO<br> CANCEL </th>
-            <td mat-cell *matCellDef="let holding">
-              <input type="number" min="0" max="{{holding.InsuredShares}}" [disabled]="cancelDisable(holding)" matInput  [(ngModel)]="holding.NumberOfSharesToCancel" >
-            <div class="errorColor" *ngIf="numberToCancelError(holding)">{{errorMessage}}</div>
-            </td>
+            <mat-header-cell *matHeaderCellDef> NUMBER TO<br> CANCEL </mat-header-cell>
+            <mat-cell *matCellDef="let holding">
+                <mat-form-field appearance="outline">
+                    <input matInput placeholder="0" [disabled]="cancelDisable(holding)" [(ngModel)]="holding.NumberOfSharesToCancel">
+                    <div class="errorColor" *ngIf="numberToCancelError(holding)">{{errorMessage}}</div>
+                </mat-form-field>
+            </mat-cell>
           </ng-container>
 
           <!-- Estimated Costs Column -->
         <ng-container matColumnDef="costs">
-            <th mat-header-cell *matHeaderCellDef> ESTIMATED COSTS </th>
-            <td mat-cell *matCellDef="let holding">
-              <input matInput placeholder="0" [(ngModel)]="holding.Premium" ></td>
+            <mat-header-cell *matHeaderCellDef> ESTIMATED COSTS </mat-header-cell>
+            <mat-cell *matCellDef="let holding">{{holding.Premium | currency:'ZAR':'symbol-narrow':'0.2-2'}}</mat-cell>
           </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (change)="onChangeValidation(row)"></tr>
-      </table>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" (change)="onChangeValidation(row)"></mat-row>>
+      </mat-table>
 
       <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </div>
@@ -115,8 +118,8 @@
       <app-add-dialog (holdingAdded)="AddHoldingHandler($event)"></app-add-dialog>
       <div class="container_submit">
         <div class="total">
-          <mat-label>TOTAL COSTS:</mat-label>
-          <input matInput placeholder="0" [(ngModel)]="Total" >
+          <mat-label>TOTAL COSTS:  {{Total | currency:'ZAR':'symbol-narrow':'0.2-2'}}</mat-label>
+          <!-- <input matInput placeholder="0" [(ngModel)]="Total"> -->
         </div>
         <div class="submit">
            <button mat-raised-button (click)="submit()" [disabled]="PolicyAgreed">SUBMIT</button>

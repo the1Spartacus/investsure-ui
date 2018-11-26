@@ -6,6 +6,7 @@ import { stringify } from '@angular/core/src/util';
 import { HttpClient } from '@angular/common/http';
 import { AccountService } from '../../shared/services/account.service';
 import { PolicyCache } from 'src/app/shared/policy.cache';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class TermsAndConditionsComponent {
   constructor(private activatedRoute: ActivatedRoute,
               private policyService: PolicyService,
               private router: Router,
-              private accountService: AccountService) {
+              private accountService: AccountService,
+              private spinnerService: Ng4LoadingSpinnerService) {
 
     activatedRoute.params.subscribe(val => {
 
@@ -32,6 +34,8 @@ export class TermsAndConditionsComponent {
       this.RequestId = val.RequestId;
       this.Broker = val.Broker;
 
+      this.spinnerService.show();
+
       this.accountService.AuthenticateRequest(val.RequestId, val.Broker)
       .subscribe( data => {
           console.log(' verify account ', data);
@@ -40,8 +44,11 @@ export class TermsAndConditionsComponent {
             sessionStorage.setItem('req_token', data.Data.RequestToken);
             this.policyService.getPolicyDetails(val.RequestId, val.Broker)
             .subscribe(policyResponse => {
+
               console.log(' policy details ', policyResponse);
               PolicyCache.addItem({RequestId: val.RequestId, DataItem: policyResponse.Data});
+              this.spinnerService.hide();
+
             });
           } else {
             //  route to an unathorized page
@@ -58,8 +65,8 @@ export class TermsAndConditionsComponent {
   }
 
   accept() {
-        this.router.navigate(['/insurance/RequestId/' + this.RequestId + '/' + this.Broker]);
-        // console.log('terms and conditions ' + this.policyService.DoesPolicyExist());
+      this.router.navigate(['/insurance/RequestId/' + this.RequestId + '/' + this.Broker]);
+      // console.log('terms and conditions ' + this.policyService.DoesPolicyExist());
   }
 
 }

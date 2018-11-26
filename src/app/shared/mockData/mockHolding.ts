@@ -110,7 +110,7 @@ export let holding: Holding[] = [{  ISINCode: 1,
 
 export let account: Account = {
   AccountBalance: 1230,
-  AccountNumber: 12345678,
+  AccountNumber: '12345678',
   TradingPlatformId: 7676767,
   TradingPlatformName: 'easyeqity'
 };

@@ -30,6 +30,8 @@ export class PolicyService {
 
   }
 
+  getPendingPolicyDetails() {}
+
   DoesPolicyExist(): boolean {
    return true;
   }

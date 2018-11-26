@@ -15,13 +15,15 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import { JwtModule } from '@auth0/angular-jwt';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import { AppComponent } from './app.component';
-import { AccountComponent } from './layer/account_holding/account.component';
+import { AccountComponent, ConfirmSubmitComponent} from './layer/account_holding/account.component';
 import { ClaimComponent } from './layer/insurance_claim/claim.component';
 
 import { DialogComponent } from './shared/dialog/policy-dialog/dialog.component';
@@ -34,19 +36,11 @@ import { AddDialogTanplateComponent, AddDialogComponent } from './shared/dialog/
 import { StockService } from './shared/services/stock.service';
 import { MasterPageComponent } from './layer/master/masterPage.component';
 import { TermsAndConditionsComponent } from './layer/terms_and_conditions/terms_and_conditions.component';
-import { from } from 'rxjs';
-import { APP_BASE_HREF } from '@angular/common';
 import { AuthenticationService } from './shared/services/auth.service';
 import { AuthGuard } from './shared/services/auth.guard';
 import { AccountService } from './shared/services/account.service';
 import { UnauthorizedComponent } from './shared/unauthorized/unauthorized.component';
-
-export function tokenGetter() {
-  return localStorage.getItem('access_token');
-}
-
-
-
+import { PolicyWordingService } from './shared/services/policyWording.service';
 
 @NgModule({
   declarations: [
@@ -60,7 +54,8 @@ export function tokenGetter() {
     AddDialogComponent,
     MasterPageComponent,
     TermsAndConditionsComponent,
-    UnauthorizedComponent
+    UnauthorizedComponent,
+    ConfirmSubmitComponent
 
   ],
   imports: [
@@ -83,21 +78,25 @@ export function tokenGetter() {
     MatToolbarModule,
     HttpModule,
     HttpClientModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    PdfViewerModule,
+    Ng4LoadingSpinnerModule.forRoot()
   ],
   exports: [
     MatFormFieldModule
   ],
   entryComponents: [
     DialogTanplateComponent,
-    AddDialogTanplateComponent
+    AddDialogTanplateComponent,
+    ConfirmSubmitComponent
   ],
   providers: [ClaimService,
               PolicyService,
               StockService,
               AuthenticationService ,
               AuthGuard,
-              AccountService
+              AccountService,
+              PolicyWordingService
             ],
   bootstrap: [AppComponent]
 })
