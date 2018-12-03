@@ -97,9 +97,19 @@ export class AccountComponent implements OnInit {
           this.policyService.submit(this.Broker, this.policydetail)
           .subscribe( submitResponse => {
             console.log('submit response ', submitResponse);
+            this.policyService.getPendingPolicyDetails(this.Broker, this.RequestId, this.policydetail.Account.AccountNumber)
+            .subscribe(penddingPolicyResponse => {
+              console.log('pending ', penddingPolicyResponse);
+              this.policydetail = penddingPolicyResponse.Data;
+              this.policyDetailData = new MatTableDataSource<Holding>(this.policydetail.Holdings);
+              this.policyDetailData.paginator = this.paginator;
+            },
+            errorPendingPolicyDetails => {
+              console.log('error  pending  policy details ', errorPendingPolicyDetails);
+            });
           },
-          error => {
-            console.log('submit error ', error);
+          errorSubmit => {
+            console.log('submit error ', errorSubmit);
           });
         } else { return; }
     });

@@ -105,7 +105,7 @@
           <!-- Estimated Costs Column -->
         <ng-container matColumnDef="costs">
             <mat-header-cell *matHeaderCellDef> ESTIMATED COSTS </mat-header-cell>
-            <mat-cell *matCellDef="let holding">{{holding.Premium | currency:'ZAR':'symbol-narrow':'0.2-2'}}</mat-cell>
+            <mat-cell *matCellDef="let holding" aria-placeholder="R0.00">{{holding.Premium | currency:'ZAR':'symbol-narrow':'0.2-2'}}</mat-cell>
           </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>>
@@ -122,8 +122,8 @@
           <!-- <input matInput placeholder="0" [(ngModel)]="Total"> -->
         </div>
         <div class="submit">
-           <button mat-raised-button (click)="submit()" [disabled]="PolicyAgreed">SUBMIT</button>
-           <div class="errorColor" *ngIf="PolicyAgreed">agree with the policy to submit</div>
+           <button mat-raised-button (click)="submit()" [disabled]="!PolicyAgreed">SUBMIT</button>
+           <div class="errorColor" *ngIf="PolicyAgreed === false">agree with the policy to submit</div>
           </div>
       </div>
   </mat-card>

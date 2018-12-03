@@ -4,6 +4,7 @@ import { Stock } from '../models/stock.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ServiceResponse } from '../models/accountReqResponse';
+import { policyDetail } from '../mockData/mockHolding';
 
 
 @Injectable()
@@ -30,10 +31,23 @@ export class PolicyService {
 
   }
 
-  getPendingPolicyDetails() {}
+  getPendingPolicyDetails(TradingPlatform: string, RequestId: string, AccountNumber: string) {
+    console.log('Getting Pending Policy Detail');
 
-  DoesPolicyExist(): boolean {
-   return true;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+        'Authorization': sessionStorage.getItem('req_token')
+      })
+    };
+    return this.http.get<ServiceResponse>('https://dev-platform.investsure.info/dev/policy/platform/' + TradingPlatform + '/request/' + RequestId + '/account/' + AccountNumber + '/pending', httpOptions);
+  }
+
+  DoesPolicyExist(_policyDetail: PolicyDetail): boolean {
+    if (_policyDetail.PolicyExist === true) {
+      return true;
+    }
   }
 
 
@@ -54,21 +68,16 @@ export class PolicyService {
     return '200';
   }
 
-  submit(TradingPlatform: string, policyDetail: PolicyDetail) {
+  submit(TradingPlatform: string, _policyDetail: PolicyDetail) {
 
-    const token = sessionStorage.getItem('req_token');
-    console.log('token ', token );
     const httpOptions = {
       headers: new HttpHeaders({
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
-        'Authorization': token
+        'Authorization': sessionStorage.getItem('req_token')
       })
     };
-
-    // this.http.post('https://dev-platform.investsure.info/dev/insurance/' + TradingPlatform, httpOptions);
-    console.log(JSON.stringify(policyDetail));
-    return this.http.post<ServiceResponse>('https://dev-platform.investsure.info/dev/insurance/' + TradingPlatform + '/process', policyDetail, httpOptions);
+    return this.http.post<ServiceResponse>('https://dev-platform.investsure.info/dev/insurance/' + TradingPlatform + '/process', _policyDetail, httpOptions);
   }
 
 }

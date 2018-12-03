@@ -32,6 +32,7 @@ export class DialogComponent {
   selector: 'app-dialog-tamplate',
   templateUrl: 'dialogTamplate.component.html',
 })
+
 export class DialogTanplateComponent {
   constructor(private policyWordingService: PolicyWordingService) {}
   pdfSrc = this.policyWordingService.getPolicyWording(sessionStorage.getItem('broker'));

@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { AccountService } from '../../shared/services/account.service';
 import { PolicyCache } from 'src/app/shared/policy.cache';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { PolicyDetail } from 'src/app/shared/models/policyDetail.model';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class TermsAndConditionsComponent {
   policyAgreed: boolean;
   RequestId: string;
   Broker: string;
+  _policyDetails: PolicyDetail;
 
   constructor(private activatedRoute: ActivatedRoute,
               private policyService: PolicyService,
@@ -44,11 +46,15 @@ export class TermsAndConditionsComponent {
             sessionStorage.setItem('req_token', data.Data.RequestToken);
             this.policyService.getPolicyDetails(val.RequestId, val.Broker)
             .subscribe(policyResponse => {
+              this._policyDetails = policyResponse.Data;
+              if (this._policyDetails .PolicyExist === true) {
+                this.router.navigate(['/insurance/RequestId/' + this.RequestId + '/' + this.Broker]);
+              } else {
+                console.log(' policy details ', policyResponse);
+                PolicyCache.addItem({RequestId: val.RequestId, DataItem: this._policyDetails});
+              }
 
-              console.log(' policy details ', policyResponse);
-              PolicyCache.addItem({RequestId: val.RequestId, DataItem: policyResponse.Data});
               this.spinnerService.hide();
-
             });
           } else {
             //  route to an unathorized page
@@ -60,11 +66,11 @@ export class TermsAndConditionsComponent {
        });
     });
 
-      // this.policyAgreed = this.policyService.DoesPolicyExist();
-
+      //  this.policyAgreed = this.policyService.DoesPolicyExist(this._policyDetails);
   }
 
   accept() {
+    this._policyDetails.PolicyExist = true;
       this.router.navigate(['/insurance/RequestId/' + this.RequestId + '/' + this.Broker]);
       // console.log('terms and conditions ' + this.policyService.DoesPolicyExist());
   }
