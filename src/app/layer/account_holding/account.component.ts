@@ -5,14 +5,9 @@ import {MatTableDataSource, MatPaginator, MatDialog} from '@angular/material';
 import { PolicyService } from '../../shared/services/policy.service';
 import { PolicyDetail } from '../../shared/models/policyDetail.model';
 import { isNullOrUndefined } from 'util';
-import { policyDetail } from '../../shared/mockData/mockHolding';
-import { AuthenticationService } from '../../shared/services/auth.service';
 import { HoldingCache } from '../../shared/models/holding.cache';
 import { PolicyCache } from '../../shared/policy.cache';
-
-
-
-
+import { PolicyWordingService } from '../../shared/services/policyWording.service';
 
 @Component({
   selector: 'app-account',
@@ -21,8 +16,6 @@ import { PolicyCache } from '../../shared/policy.cache';
 })
 export class AccountComponent implements OnInit {
 
-  // declarations
-  // pending: string[];
   displayedColumns: string[];
   errorMessage: string;
   disableSubmitBtn: boolean;
@@ -36,39 +29,25 @@ export class AccountComponent implements OnInit {
   RequestId: string;
   Broker: string;
 
-  // isPolicyAgreed: boolean;
-// constractor
   constructor(private activatedRoute: ActivatedRoute,
               private policyService: PolicyService,
               private router: Router,
               public dialog: MatDialog ) {
-    activatedRoute.params.subscribe(val => {
-      console.log('acctive route');
 
-      //  this.AuthService.AuthenticateRequest(val.RequestId);
+    activatedRoute.params.subscribe(val => {
+
       this.RequestId = val.RequestId;
       this.Broker = val.Broker;
       sessionStorage.setItem('broker', this.Broker);
-       console.log(val.RequestId);
+
     });
 
-    // if (!this.AuthService.isAuthenticated()) {
-    //   this.router.navigate(['**']);
-    // }
-
-    this.policydetail = <PolicyDetail>PolicyCache.getItem(this.RequestId);  // this.policyService.getPolicyDetails();
-    console.log('policy details ', this.policydetail);
+    this.policydetail = <PolicyDetail>PolicyCache.getItem(this.RequestId);
     this.PolicyAgreed = this.policydetail.PolicyExist;
-    this.policyDetailData = new MatTableDataSource<Holding>(this.policydetail.Holdings);
     this.HoldingsCount = this.policydetail.Holdings.length;
 
-    console.log('constructor');
+    this.policyDetailData = new MatTableDataSource<Holding>(this.policydetail.Holdings);
     this.displayedColumns = ['position', 'share', 'value', 'totalNumShares', 'uninsured', 'pending', 'insured', 'insure', 'cancel', 'costs'];
-
-    // sessionStorage.clear();
-
-    // RequestId = this.activatedRoute.snapshot.params['RequestId'];
-    // const TradingPlatform = this.activatedRoute.snapshot.params['Broker'];
 
     const sessionRequestId: string = sessionStorage.getItem('RequestId');
     if (sessionRequestId === null || sessionRequestId === undefined) {
@@ -100,6 +79,7 @@ export class AccountComponent implements OnInit {
             this.policyService.getPendingPolicyDetails(this.Broker, this.RequestId, this.policydetail.Account.AccountNumber)
             .subscribe(penddingPolicyResponse => {
               console.log('pending ', penddingPolicyResponse);
+              this.Total = 0;
               this.policydetail = penddingPolicyResponse.Data;
               this.policyDetailData = new MatTableDataSource<Holding>(this.policydetail.Holdings);
               this.policyDetailData.paginator = this.paginator;
@@ -113,30 +93,9 @@ export class AccountComponent implements OnInit {
           });
         } else { return; }
     });
-
-
-      //  this.resp = await this.policyService.savePolicyMovements(this.policydetail);
-
-      // if (this.resp === '200') {
-      //   // this.router.navigate(['insurance/RequestId/ABCD123/ShareNet']);
-      //   PolicyCache.removeItem(this.RequestId);
-
-      //   this.policyService.getPolicyDetails(this.RequestId, this.Broker).
-      //   subscribe(policydetail => {
-      //     this.policydetail = policydetail.Data;
-      //   });
-      //    if (!isNullOrUndefined(this.policydetail)) {
-      //       PolicyCache.addItem({ RequestId: this.RequestId, DataItem: this.policydetail });
-      //    }
-
-      //   this.policyDetailData = new MatTableDataSource<Holding>(this.policydetail.Holdings);
-      //  }
-      // this.policyDetailData.paginator = this.paginator;
-      // console.log('auto renewal ' + this.policydetail.Policy.IsAutoRenewal);
-      // console.log('total is: ' + this.Total);
-      // this.Total = 0;
   }
-  // oln change function
+
+  // on change function
   onChangeValidation(row) {
     this.calculatePremium(row);
   }
@@ -250,16 +209,46 @@ export class AccountComponent implements OnInit {
 
     return -1;
   }
-   policyWordingHandler($event) {
-    this.PolicyAgreed = $event;
+  //  policyWordingHandler($event) {
+  //   this.PolicyAgreed = $event;
+  // }
+
+  disableHolding(row) {
+    const holding = <Holding>row;
+    if (holding.StockActivity === true) {
+      return true;
+    } else {return false; }
+  }
+
+  // open policy  wording
+  openDialog() {
+    const dialogRef = this.dialog.open(DialogTanplateComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.PolicyAgreed = result;
+      console.log(`Dialog result: ${result}`);
+    });
   }
 }
 
+// confirmation dialog
 @Component ({
   selector: 'app-confirm-submit',
   templateUrl: './confirmSubmit.component.html'
 })
 
 export class ConfirmSubmitComponent {
+}
+
+// policy wording dialog
+
+@Component({
+  selector: 'app-dialog-tamplate',
+  templateUrl: './dialogTamplate.component.html',
+})
+
+export class DialogTanplateComponent {
+  constructor(private policyWordingService: PolicyWordingService) {}
+  pdfSrc = this.policyWordingService.getPolicyWording(sessionStorage.getItem('broker'));
 }
 

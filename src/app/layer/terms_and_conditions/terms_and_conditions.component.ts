@@ -72,7 +72,6 @@ export class TermsAndConditionsComponent {
   accept() {
     this._policyDetails.PolicyExist = true;
       this.router.navigate(['/insurance/RequestId/' + this.RequestId + '/' + this.Broker]);
-      // console.log('terms and conditions ' + this.policyService.DoesPolicyExist());
   }
 
 }

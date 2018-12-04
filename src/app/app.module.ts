@@ -26,8 +26,8 @@ import { AppComponent } from './app.component';
 import { AccountComponent, ConfirmSubmitComponent} from './layer/account_holding/account.component';
 import { ClaimComponent } from './layer/insurance_claim/claim.component';
 
-import { DialogComponent } from './shared/dialog/policy-dialog/dialog.component';
-import { DialogTanplateComponent } from './shared/dialog/policy-dialog/dialog.component';
+// import { DialogComponent } from './shared/dialog/policy-dialog/dialog.component';
+import { DialogTanplateComponent } from './layer/account_holding/account.component';
 import { ClaimService } from './shared/services/claim.service';
 import { NotFoundComponent } from './shared/errors/not-found.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -47,7 +47,7 @@ import { PolicyWordingService } from './shared/services/policyWording.service';
     AppComponent,
     AccountComponent,
     ClaimComponent,
-    DialogComponent,
+    // DialogComponent,
     DialogTanplateComponent,
     NotFoundComponent,
     AddDialogTanplateComponent,

@@ -77,3 +77,15 @@ mat-label{
   margin-top: -5%;
 }
 
+.policy {
+  float: right;
+  margin-top: -5%;
+  margin-right: 8%;
+  width: auto;
+  height: auto;
+  border-radius: 38px;
+  text-align: center;
+  font-size: 14px;
+  color: aliceblue;
+  background-color: #286491;
+}

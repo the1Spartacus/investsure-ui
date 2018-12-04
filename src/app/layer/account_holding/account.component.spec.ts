@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AccountComponent } from './account.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DialogComponent, DialogTanplateComponent } from '../../shared/dialog/policy-dialog/dialog.component';
+import { DialogTanplateComponent } from '../account_holding/account.component';
 import { MatListModule } from '@angular/material/list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
@@ -39,12 +39,10 @@ describe('AccountComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AccountComponent,
-                      DialogComponent,
                       AddDialogComponent,
                       AppComponent,
                       AccountComponent,
                       ClaimComponent,
-                      DialogComponent,
                       DialogTanplateComponent,
                       NotFoundComponent,
                       AddDialogTanplateComponent,

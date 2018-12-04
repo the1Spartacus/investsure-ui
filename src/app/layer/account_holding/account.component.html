@@ -1,7 +1,13 @@
-<app-dialog (agree)="policyWordingHandler($event)"></app-dialog>
-<div>
-  <img class="logo" src="assets\InvestSure.png">
+<!-- <app-dialog (agree)="policyWordingHandler($event)"></app-dialog> -->
+<div class="headerContainer">
+  <div class="logoDiv">
+    <img class="logo" src="assets\InvestSure.png">
+  </div>
+  <div class="policyDiv">
+      <button class="policy" mat-button (click)="openDialog()">view policy wording</button>
+  </div>
 </div>
+
 <div class="container">
   <div class="client-info">
     <mat-list>
@@ -59,25 +65,25 @@
         <!-- Total number of shares Column -->
         <ng-container matColumnDef="totalNumShares">
           <mat-header-cell *matHeaderCellDef> TOTAL NUMBER<br> OF SHARES </mat-header-cell>
-          <mat-cell class="totnum"  *matCellDef="let holding"> {{holding.NumberOfShares}}</mat-cell>
+          <mat-cell class="totnum"  *matCellDef="let holding"> {{holding.NumberOfShares | number :'0.2-2'}}</mat-cell>
         </ng-container>
 
         <!-- Uninsured Column -->
         <ng-container matColumnDef="uninsured">
           <mat-header-cell *matHeaderCellDef> UNINSURED </mat-header-cell>
-          <mat-cell *matCellDef="let holding"> {{holding.UninsuredShares}} </mat-cell>
+          <mat-cell *matCellDef="let holding"> {{holding.UninsuredShares | number :'0.2-2'}} </mat-cell>
         </ng-container>
 
         <!-- Panding insure Column -->
         <ng-container matColumnDef="pending">
             <mat-header-cell *matHeaderCellDef> PENDING <br>INSURE </mat-header-cell>
-            <mat-cell *matCellDef="let holding"> {{holding.PendingShares}} </mat-cell>
+            <mat-cell *matCellDef="let holding"> {{holding.PendingShares | number :'0.2-2'}} </mat-cell>
           </ng-container>
 
           <!-- Insured Column -->
         <ng-container matColumnDef="insured">
             <mat-header-cell *matHeaderCellDef> INSURED </mat-header-cell>
-            <mat-cell *matCellDef="let holding"> {{holding.InsuredShares}} </mat-cell>
+            <mat-cell *matCellDef="let holding"> {{holding.InsuredShares | number :'0.2-2'}} </mat-cell>
           </ng-container>
 
           <!-- Number to  Insure Column -->
@@ -85,7 +91,7 @@
             <mat-header-cell *matHeaderCellDef> NUMBER TO<br> INSURE </mat-header-cell>
             <mat-cell *matCellDef="let holding">
                 <mat-form-field appearance="outline">
-                    <input matInput placeholder="0" [disabled]="insureDisable(holding)"   [(ngModel)]="holding.NumberOfSharesToInsure" >
+                    <input matInput placeholder="0" [disabled]="insureDisable(holding) || disableHolding(holding)" [(ngModel)]="holding.NumberOfSharesToInsure" >
                     <div class="errorColor" *ngIf="numberToInsureError(holding)">{{errorMessage}}</div>
                   </mat-form-field>
             </mat-cell>
@@ -96,7 +102,7 @@
             <mat-header-cell *matHeaderCellDef> NUMBER TO<br> CANCEL </mat-header-cell>
             <mat-cell *matCellDef="let holding">
                 <mat-form-field appearance="outline">
-                    <input matInput placeholder="0" [disabled]="cancelDisable(holding)" [(ngModel)]="holding.NumberOfSharesToCancel">
+                    <input matInput placeholder="0" [disabled]="cancelDisable(holding) || disableHolding(holding)" [(ngModel)]="holding.NumberOfSharesToCancel">
                     <div class="errorColor" *ngIf="numberToCancelError(holding)">{{errorMessage}}</div>
                 </mat-form-field>
             </mat-cell>
